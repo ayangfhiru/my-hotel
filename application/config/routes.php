@@ -75,20 +75,28 @@ $route['hotel/(:num)/room/(:num)/room-code'] = "roomcode/index/$1/$2";
 $route['hotel/(:num)/room/(:num)/room-code/store'] = "roomcode/store/$1/$2";
 $route['hotel/(:num)/room/(:num)/room-code/(:num)/update'] = "roomcode/update/$1/$2/$3";
 $route['hotel/(:num)/room/(:num)/room-code/(:num)/delete'] = "roomcode/destroy/$1/$2/$3";
+$route['hotel/(:num)/room-code/(:num)/update-status'] = "roomcode/update_room_code_status/$1/$2";
+
 
 // Reservation Route
 $route['hotel/(:num)/reservation'] = "reservation/index/$1";
-$route['hotel/(:num)/reservation/cal'] = "reservation/calendar/$1";
+$route['hotel/(:num)/reservation/calendar'] = "reservation/calendar/$1";
 $route['hotel/(:num)/reservation/(:num)/show'] = "reservation/show/$1/$2";
 $route['hotel/(:num)/room/(:num)/reservation'] = "reservation/create/$1/$2";
 $route['hotel/(:num)/room/(:num)/reservation/store'] = "reservation/store/$1/$2";
 $route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-cancel'] = "reservation/guest_cancel/$1/$2/$3"; // update pembatalan reservasi
 $route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-in'] = "reservation/guest_in/$1/$2/$3"; // update saat tamu masuk
 $route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-out'] = "reservation/guest_out/$1/$2/$3"; // update saat tamu keluar
-$route['hotel/(:num)/reservation/cal'] = "reservation/calendar/$1"; // update saat tamu keluar
 
 // Payment Route
 $route['hotel/(:num)/reservation/(:num)/payment/(:num)/set-status'] = "payment/update_status_payment/$1/$2/$3";
 
 // Invoice
 $route['reservation/(:num)/invoice'] = "invoice/generate_invoice/$1";
+
+// Route untuk set reservation status
+$route['hotel/(:num)/reservation/(:num)/confirmed'] = "reservationstatus/confirmed/$1/$2";
+$route['hotel/(:num)/reservation/(:num)/cancelled'] = "reservationstatus/cancelled/$1/$2";
+$route['hotel/(:num)/reservation/(:num)/checked-in'] = "reservationstatus/checked_in/$1/$2";
+$route['hotel/(:num)/reservation/(:num)/in-house'] = "reservationstatus/in_house/$1/$2";
+$route['hotel/(:num)/reservation/(:num)/checked-out'] = "reservationstatus/checked_out/$1/$2";

@@ -92,4 +92,16 @@ class RoomCode extends CI_Controller
     }
 
     public function destroy() {}
+
+    public function update_room_code_status($hotelId, $roomCodeId)
+    {
+        $roomStatus = $this->input->post('room_status');
+        $update = $this->room_code_model->update($roomCodeId, ['room_status' => $roomStatus]);
+        if ($update === TRUE) {
+            $this->session->set_flashdata('success', '');
+        } else {
+            $this->session->set_flashdata('failed', '');
+        }
+        redirect("hotel/$hotelId/reservation/calendar");
+    }
 }

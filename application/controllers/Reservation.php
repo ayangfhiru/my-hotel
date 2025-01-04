@@ -202,24 +202,35 @@ class Reservation extends CI_Controller
 
     public function calendar($hotelId)
     {
+        guard('admin');
         $this->load->model('room_model');
+
+        $startDate = $this->input->get('start');
+        $endDate = $this->input->get('end');
+
+        if (empty($startDate) || empty($endDate) || $startDate > $endDate) {
+            $startDate = date('Y-m-d');
+            $endDate = date('Y-m-d', strtotime('+30 days'));
+        };
+
         $roomCode = $this->room_model->get_room_code($hotelId);
-        $reservations = $this->reservation_model->get_reservation($hotelId);
+        $reservations = $this->reservation_model->get_reservation($hotelId, $startDate, $endDate);
 
         $data = [
             'title' => 'Kalender',
-            'dates' => $this->generateDateRange(),
+            'hotelId' => $hotelId,
+            'dates' => $this->generateDateRange($startDate, $endDate),
             'room_code' => $roomCode,
-            'reservations' => $reservations
+            'reservations' => $reservations,
+            'startDate' => $startDate,
+            'endDate' => $endDate
         ];
+
         $this->load->view("admin/reservation/calendar", $data);
     }
 
-    private function generateDateRange($startDate = "2024-12-25", $endDate = "2024-12-31")
+    private function generateDateRange($startDate, $endDate)
     {
-        $startDate = $startDate ?: date('Y-m-d');
-        $endDate = $endDate ?: date('Y-m-d', strtotime('+30 days'));
-
         $dateRange = [];
         $currentDate = strtotime($startDate);
         $endDate = strtotime($endDate);

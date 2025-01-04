@@ -14,67 +14,78 @@
                  </button>
              </div>
              <div class="modal-body">
-                 <form>
-                     <div class="mb-3">
-                         <label class="form-label">Invoice</label>
-                         <input :value="invoice" class="form-control" disabled>
+                 <div class="mb-3">
+                     <label class="form-label">Invoice</label>
+                     <input :value="invoice" class="form-control" disabled>
+                 </div>
+                 <div class="mb-3">
+                     <label class="form-label">Full Name</label>
+                     <input :value="fullName" class="form-control" disabled>
+                 </div>
+                 <div class="mb-3">
+                     <label class="form-label">Status</label>
+                     <input :value="resStatus.replace('_', ' ')" class="form-control text-capitalize" disabled>
+                 </div>
+                 <div class="mb-3 row">
+                     <div class="col">
+                         <label class="form-label">Identity</label>
+                         <input :value="identity" class="form-control text-uppercase" disabled>
                      </div>
-                     <div class="mb-3">
-                         <label class="form-label">Full Name</label>
-                         <input :value="fullName" class="form-control" disabled>
+                     <div class="col">
+                         <label class="form-label">Identity Number</label>
+                         <input :value="identityNum" class="form-control" disabled>
                      </div>
-                     <div class="mb-3">
-                         <label class="form-label">Status</label>
-                         <input :value="resStatus.replace('_', ' ')" class="form-control text-capitalize" disabled>
+                 </div>
+                 <div class="mb-3 row">
+                     <div class="col">
+                         <label class="form-label">Email</label>
+                         <input :value="email" class="form-control" disabled>
                      </div>
-                     <div class="mb-3 row">
-                         <div class="col">
-                             <label class="form-label">Identity</label>
-                             <input :value="identity" class="form-control text-uppercase" disabled>
-                         </div>
-                         <div class="col">
-                             <label class="form-label">Identity Number</label>
-                             <input :value="identityNum" class="form-control" disabled>
-                         </div>
+                     <div class="col">
+                         <label class="form-label">Phone Number</label>
+                         <input :value="phoneNum" class="form-control" disabled>
                      </div>
-                     <div class="mb-3 row">
-                         <div class="col">
-                             <label class="form-label">Email</label>
-                             <input :value="email" class="form-control" disabled>
-                         </div>
-                         <div class="col">
-                             <label class="form-label">Phone Number</label>
-                             <input :value="phoneNum" class="form-control" disabled>
-                         </div>
+                 </div>
+                 <div class="row">
+                     <div class="col">
+                         <label class="form-label">Payment Method</label>
+                         <input :value="payMethod" class="form-control text-capitalize" disabled>
                      </div>
-                     <div class="mb-3 row">
-                         <div class="col">
-                             <label class="form-label">Payment Method</label>
-                             <input :value="payMethod" class="form-control text-capitalize" disabled>
-                         </div>
-                         <div class="col">
-                             <label class="form-label">Price</label>
-                             <input :value="amount" class="form-control" disabled>
-                         </div>
+                     <div class="col">
+                         <label class="form-label">Price</label>
+                         <input :value="amount" class="form-control" disabled>
                      </div>
-                     <div class="modal-footer">
-                         <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                         <a x-show="resStatus === 'pending'" x-bind:href="'<?= site_url() ?>hotel/' + hotelId + '/room-code/' + roomCodeId + '/reservation/' + reservationId + '/guest-cancel'" type="submit"
-                             class="btn btn-danger">
-                             Cancel
-                         </a>
-                         <a x-show="resStatus === 'confirmed'" x-bind:href="'<?= site_url() ?>hotel/' + hotelId + '/room-code/' + roomCodeId + '/reservation/' + reservationId + '/guest-in'" type="submit"
-                             class="btn btn-primary">
-                             Check In
-                             <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                         </a>
-                         <a x-show="resStatus === 'in_house'" x-bind:href="'<?= site_url() ?>hotel/' + hotelId + '/room-code/' + roomCodeId + '/reservation/' + reservationId + '/guest-out'" type="submit"
-                             class="btn btn-primary">
-                             Check Out
-                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                         </a>
-                     </div>
-                 </form>
+                 </div>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+
+                 <button x-show="resStatus === 'pending'" type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#modalReservationCancelled">
+                     Cancelled
+                 </button>
+
+                 <a x-show="resStatus === 'pending'"
+                     :href="'<?= site_url() ?>hotel/' + hotelId + '/reservation/' + reservationId + '/confirmed'"
+                     class="btn btn-success">
+                     Konfirmasi
+                 </a>
+
+                 <a x-show="resStatus === 'confirmed' || resStatus === 'in_house'"
+                     :href="'<?= site_url() ?>hotel/' + hotelId + '/reservation/' + reservationId + '/checked-in'"
+                     class="btn btn-primary">
+                     Check In <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                 </a>
+                 <a x-show="resStatus === 'confirmed'"
+                     :href="'<?= site_url() ?>hotel/' + hotelId + '/reservation/' + reservationId + '/in-house'"
+                     class="btn btn-primary">
+                     In House <i class="fa-regular fa-clock"></i>
+                 </a>
+
+                 <a x-show="resStatus === 'checked_in'"
+                     :href="'<?= site_url() ?>hotel/' + hotelId + '/reservation/' + reservationId + '/checked-out'"
+                     class="btn btn-primary">
+                     Check Out <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                 </a>
              </div>
          </div>
      </div>
