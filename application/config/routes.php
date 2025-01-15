@@ -49,7 +49,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'home';
+$route['default_controller'] = 'hotel/guest_home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
@@ -69,6 +69,7 @@ $route['hotel/(:num)/room/store'] = "room/store/$1";
 $route['hotel/(:num)/room/(:num)/edit'] = "room/edit/$1/$2";
 $route['hotel/(:num)/room/(:num)/update'] = "room/update/$1/$2";
 $route['hotel/(:num)/room/search'] = "room/search_room_available/$1";
+$route['guest/hotel/(:num)/room'] = "room/guest_room/$1";
 
 // Room Code Route
 $route['hotel/(:num)/room/(:num)/room-code'] = "roomcode/index/$1/$2";
@@ -77,19 +78,24 @@ $route['hotel/(:num)/room/(:num)/room-code/(:num)/update'] = "roomcode/update/$1
 $route['hotel/(:num)/room/(:num)/room-code/(:num)/delete'] = "roomcode/destroy/$1/$2/$3";
 $route['hotel/(:num)/room-code/(:num)/update-status'] = "roomcode/update_room_code_status/$1/$2";
 
-
 // Reservation Route
-$route['hotel/(:num)/reservation'] = "reservation/index/$1";
 $route['hotel/(:num)/reservation/calendar'] = "reservation/calendar/$1";
 $route['hotel/(:num)/reservation/(:num)/show'] = "reservation/show/$1/$2";
 $route['hotel/(:num)/room/(:num)/reservation'] = "reservation/create/$1/$2";
 $route['hotel/(:num)/room/(:num)/reservation/store'] = "reservation/store/$1/$2";
-$route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-cancel'] = "reservation/guest_cancel/$1/$2/$3"; // update pembatalan reservasi
-$route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-in'] = "reservation/guest_in/$1/$2/$3"; // update saat tamu masuk
-$route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-out'] = "reservation/guest_out/$1/$2/$3"; // update saat tamu keluar
+$route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-cancel'] = "reservation/reservation_cancel/$1/$2/$3"; // update pembatalan reservasi
+$route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-in'] = "reservation/check_in/$1/$2/$3"; // update saat tamu masuk
+$route['hotel/(:num)/room-code/(:num)/reservation/(:num)/guest-out'] = "reservation/check_out/$1/$2/$3"; // update saat tamu keluar
+$route['guest/hotel/(:num)/room/(:num)/reservation'] = "reservation/guest_reservation/$1/$2";
+$route['guest/hotel/(:num)/room/(:num)/reservation/store'] = "reservation/guest_store/$1/$2";
 
 // Payment Route
-$route['hotel/(:num)/reservation/(:num)/payment/(:num)/set-status'] = "payment/update_status_payment/$1/$2/$3";
+$route['hotel/(:num)/payment'] = "payment/index/$1";
+$route['payment/(:num)/reservation/(:num)/cancel'] = "payment/cancel/$1/$2";
+
+$route['hotel/(:num)/reservation/(:num)/payment/(:num)/completed'] = "payment/confirm_status_payment/$1/$2/$3";
+$route['hotel/(:num)/reservation/(:num)/payment/(:num)/cancelled'] = "payment/cancel_status_payment/$1/$2/$3";
+$route['reservation/(:num)/detail'] = "order/detail_order/$1";
 
 // Invoice
 $route['reservation/(:num)/invoice'] = "invoice/generate_invoice/$1";
@@ -100,3 +106,10 @@ $route['hotel/(:num)/reservation/(:num)/cancelled'] = "reservationstatus/cancell
 $route['hotel/(:num)/reservation/(:num)/checked-in'] = "reservationstatus/checked_in/$1/$2";
 $route['hotel/(:num)/reservation/(:num)/in-house'] = "reservationstatus/in_house/$1/$2";
 $route['hotel/(:num)/reservation/(:num)/checked-out'] = "reservationstatus/checked_out/$1/$2";
+
+$route['guest'] = "hotel/guest_home";
+$route['guest/order'] = "order/list_order";
+$route['guest/order/(:num)/detail'] = "order/detail_order/$1";
+$route['guest/payment/(:num)/transfer'] = "payment/guest_transfer/$1";
+$route['guest/cart/room/(:num)/add'] = "guest/add_cart/$1";
+$route['guest/cart'] = "guest/cart";

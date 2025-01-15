@@ -43,8 +43,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
           <li class="<?php echo $this->uri->segment(1) == 'facility' || $this->uri->segment(2) == 'facility' ? 'active' : ''; ?>">
             <a class="nav-link" href="<?= base_url('facility'); ?>">Fasilitas</a>
           </li>
-          <li class="<?php echo $this->uri->segment(1) == 'bed' || $this->uri->segment(2) == 'facility' ? 'active' : ''; ?>">
+          <li class="<?php echo $this->uri->segment(1) == 'bed' || $this->uri->segment(2) == 'bed' ? 'active' : ''; ?>">
             <a class="nav-link" href="<?= base_url('bed'); ?>">Tempat Tidur</a>
+          </li>
+          <li class="<?php echo $this->uri->segment(1) == 'service' || $this->uri->segment(2) == 'service' ? 'active' : ''; ?>">
+            <a class="nav-link" href="<?= base_url('service'); ?>">Service</a>
           </li>
         </ul>
       </li>

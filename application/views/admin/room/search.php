@@ -20,9 +20,9 @@ $this->load->view('admin/_partials/header');
         </div>
 
         <div class="section-body">
-            <div class="d-flex">
+            <div class="d-flex mb-5">
                 <form action="<?= site_url("hotel/$hotelId/room/search") ?>" method="POST">
-                    <div class="mb-3 form-row">
+                    <div class="flex items-end">
                         <div class="col">
                             <label for="check_in" class="form-label">Check In</label>
                             <input type="date" id="check_in" name="check_in" value="<?= set_value('check_in') ?>" class="form-control">
@@ -33,35 +33,43 @@ $this->load->view('admin/_partials/header');
                             <input type="date" id="check_out" name="check_out" value="<?= set_value('check_out') ?>" class="form-control">
                             <?= form_error('check_out', '<span class="text-danger ml-2">', '</span>') ?>
                         </div>
-                        <button type="submit" class="btn btn-success">Search Room</button>
+                        <div>
+                            <button type="submit" class="btn btn-success">Search Room</button>
+                        </div>
                     </div>
                 </form>
             </div>
-            <div class="row">
-                <?php foreach ($rooms as $room):; ?>
-                    <div class="col-12 col-md-3 col-lg-3">
-                        <a href="<?= site_url("hotel/$hotelId/room/$room->room_id/reservation") ?>?check_in=<?= set_value('check_in') ?>&check_out=<?= set_value('check_out') ?>">
-                            <div class="card bg-secondary text-dark">
-                                <div class="card-header">
-                                    <h4><?= $room->room_type; ?></h4>
-                                </div>
-                                <div class="card-body text-center">
-                                    <h1><?= $room->total; ?></h1>
-                                </div>
+            <div class="grid grid-cols-4 gap-10">
+                <?php foreach ($rooms as $room): ?>
+                    <a href="<?= site_url("hotel/$hotelId/room/$room->room_id/reservation") ?>?check_in=<?= set_value('check_in') ?>&check_out=<?= set_value('check_out') ?>" class="no-underline">
+                        <div class="w-full max-w-sm p-4 bg-gray-100 border border-gray-200 rounded-lg sm:p-8 cursor-pointer hover:shadow-lg">
+                            <h5 class="mb-3 text-xl font-medium text-gray-500 no-underline"><?= $room->room_type; ?></h5>
+                            <div class="flex flex-col mb-2">
+                                <span><i class="fa-solid fa-user"></i> <?= $room->capacity; ?></span>
+                                <span><i class="fa-solid fa-bed"></i> <?= $room->bed_name; ?></span>
                             </div>
-                        </a>
-                    </div>
+                            <div class="flex items-baseline text-gray-900">
+                                <span class="text-lg font-semibold mr-1">IDR</span>
+                                <span class="text-xl font-extrabold tracking-tight"><?= number_format($room->price); ?></span>
+                            </div>
+                            <ul role="list" class="space-y-5 my-7">
+                                <?php foreach ($facilities as $facility): ?>
+                                    <?php if ($facility->room_id === $room->room_id): ?>
+                                        <li class="flex items-center">
+                                            <svg class="flex-shrink-0 w-4 h-4 text-blue-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                                            </svg>
+                                            <span class="text-base font-normal leading-tight text-gray-500 ms-3"><?= $facility->facility_name; ?></span>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>
     </section>
-
-    <!-- Modal Reservation -->
-    <?php $this->load->view('admin/room/modal_date_reservation'); ?>
-
-    <!-- Modal delete -->
-    <?php $this->load->view('admin/room/modal_delete'); ?>
-
 </div>
 
 <?php $this->load->view('admin/_partials/footer'); ?>

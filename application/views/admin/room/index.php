@@ -54,18 +54,18 @@ $this->load->view('admin/_partials/header');
 
         <div class="section-body table-hover table-responsive">
             <div class="d-flex">
-                <a href="<?= site_url("hotel/$hotelId/room/create") ?>" type="button" class="btn btn-primary mb-3 mx-2">Tambah Kamar</a>
-                <a href="<?= site_url("hotel/$hotelId/reservation") ?>" type="button" title="Info Code Room" class="btn btn-primary mb-3 mx-2">
-                    List Reservasi
-                </a>
+                <a href="<?= site_url("hotel/$hotelId/room/create") ?>" type="button" class="btn btn-primary mb-3 mx-2">Kamar</a>
                 <button type="button"
                     class="btn btn-primary mb-3 mx-2"
                     data-toggle="modal"
                     data-target="#modalDateReservation">
-                    Tambah Reservasi
+                    Reservasi
                 </button>
-                <a href="<?= site_url("hotel/$hotelId/reservation/cal") ?>" type="button" title="Info Code Room" class="btn btn-primary mb-3 mx-2">
+                <a href="<?= site_url("hotel/$hotelId/reservation/calendar") ?>" type="button" title="Info Code Room" class="btn btn-primary mb-3 mx-2">
                     Kalender
+                </a>
+                <a href="<?= site_url("hotel/$hotelId/payment") ?>" type="button" title="Info Code Room" class="btn btn-primary mb-3 mx-2">
+                    Pembayaran
                 </a>
             </div>
             <table class="table border">
@@ -112,7 +112,7 @@ $this->load->view('admin/_partials/header');
     </section>
 
     <!-- Modal Reservation -->
-    <?php $this->load->view('admin/room/modal_date_reservation'); ?>
+    <?php $this->load->view('admin/reservation/modal_date_reservation'); ?>
 
     <!-- Modal delete -->
     <?php $this->load->view('admin/room/modal_delete'); ?>

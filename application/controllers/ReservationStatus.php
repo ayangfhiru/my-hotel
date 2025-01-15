@@ -29,8 +29,11 @@ class ReservationStatus extends CI_Controller
             if ($this->form_validation->run() === FALSE) {
                 redirect("hotel/$hotelId/reservation/calendar");
             } else {
-                $data['note'] = $note;
-                $add = $this->cancel_reservation_model->create_multiple_tables($data, $reservationId);
+                $dataCandeled = [
+                    'reservation_id' => $reservationId,
+                    'note' => $note
+                ];
+                $add = $this->reservation_model->cancel_reservation($reservationId, $dataCandeled);
             }
         } else {
             $add = $this->reservation_model->update($reservationId, $data);

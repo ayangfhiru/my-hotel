@@ -69,7 +69,7 @@
                         Create an account
                     </button>
                 </div>
-                <p class="text-gray-800 text-sm mt-6 text-center">Already have an account? <a href="<?= site_url('sign-in') ?>" class="text-blue-600 font-semibold hover:underline ml-1">Login</a></p>
+                <p class="text-gray-800 text-sm mt-6 text-center">Already have an account? <a href="<?= site_url('user/login') ?>" class="text-blue-600 font-semibold hover:underline ml-1">Login</a></p>
             </form>
         </div>
     </div>

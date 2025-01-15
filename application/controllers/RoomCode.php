@@ -53,8 +53,7 @@ class RoomCode extends CI_Controller
             $dataRoomCode = [
                 'room_id' => $roomId,
                 'room_code' => $roomCode,
-                'is_clean' => 1,
-                'is_available' => 1,
+                'room_status' => 'VC'
             ];
             $post = $this->room_code_model->create($dataRoomCode);
             if ($post === TRUE) {

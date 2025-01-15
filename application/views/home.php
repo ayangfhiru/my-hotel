@@ -18,10 +18,14 @@ $this->load->view('templates/header');
             <div class="text-center">
                 <h1 class="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">Data to enrich your online business</h1>
                 <p class="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.</p>
-                <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="#" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
-                    <a href="#" class="text-sm/6 font-semibold text-gray-900">Learn more <span aria-hidden="true">→</span></a>
-                </div>
+                <form action="">
+                    <div class="mt-10 flex items-center justify-center gap-x-6">
+                        <input type="date" name="checkIn" id="checkIn" class="px-2 py-2 rounded w-60">
+                        <h1>TO</h1>
+                        <input type="date" name="checkOut" id="checkOut" class="px-2 py-2 rounded w-60">
+                        <button type="submit" class="px-3 py-2 bg-blue-400 rounded text-white">Search</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
@@ -30,7 +34,6 @@ $this->load->view('templates/header');
     </div>
     <!-- Content -->
     <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Hotel</h2>
         <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             <?php foreach ($hotels as $hotel): ?>
                 <div class="group relative">
@@ -38,7 +41,11 @@ $this->load->view('templates/header');
                     <div class="mt-4 flex justify-between">
                         <div>
                             <h3 class="text-sm text-gray-700">
-                                <a href="<?= site_url("hotel/$hotel->hotel_id/detail") ?>">
+                                <a href="<?= site_url(
+                                                "guest/hotel/$hotel->hotel_id/room" .
+                                                    ((isset($checkIn) ? "?check_in=$checkIn"  : '') .
+                                                        (isset($checkOut) ? (isset($checkIn) ? '&' : '?') . 'check_out=' . $checkOut : ''))
+                                            ) ?>">
                                     <span aria-hidden="true" class="absolute inset-0"></span>
                                     <?= $hotel->name; ?>
                                 </a>

@@ -1,10 +1,10 @@
 {
     "roboto": {
-        "100": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_100_81da20a7c5fb175e52e6ee4196e29c80",
-        "300": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_300_946532f67a57584be06dd863f541ac7d",
-        "normal": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_normal_db1168cc5f8fc5193d9c7b7eda0425aa",
-        "500": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_500_d177939444fd8c92ee010dd8555b80cd",
-        "bold": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_bold_24123a87fbd881816d70b33a3b5b8d72",
-        "900": "roboto_900_c0b90c3d4073a93955e8f0c478bd97cf"
+        "100": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_100_e78e44467c345f94eda9f784ad349741",
+        "300": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_300_373f816e49d8622890f07d83ec8d9dab",
+        "normal": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_normal_19250a3c7a2346a578e91836ef344bb1",
+        "500": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_500_947f3c107f46aee70a82dc5f0f0f422d",
+        "bold": "C:\\GHEGE\\CodeIgniter\\my-hotel\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_bold_7add27c6330be31e8750ec1816378b48",
+        "900": "roboto_900_cfe24a69adfadd85928b823515b6322e"
     }
 }

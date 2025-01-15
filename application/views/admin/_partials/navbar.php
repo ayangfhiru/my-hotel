@@ -22,7 +22,7 @@
                 </div>
                 <div class="search-item">
                     <a href="#">
-                        <img class="mr-3 rounded" width="30" src="<?php echo base_url(); ?>assets/img/products/product-3-50.png" alt="product">
+                        <img class="mr-3 rounded" width="30" src="<?php echo base_url(); ?>" alt="product">
                         Phone S9 Limited Edition
                     </a>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="dropdown-list-content dropdown-list-message">
                     <a href="#" class="dropdown-item">
                         <div class="dropdown-item-avatar">
-                            <img alt="image" src="<?php echo base_url(); ?>assets/img/avatar/avatar-5.png" class="rounded-circle">
+                            <img alt="image" src="<?php echo base_url(); ?>" class="rounded-circle">
                         </div>
                         <div class="dropdown-item-desc">
                             <b>Alfa Zulkarnain</b>

@@ -8,18 +8,34 @@ class User_model extends CI_Model
 
     public function find($userId)
     {
-        $this->db->from($this->table);
-        $this->db->where($this->primaryKey, $userId);
+        try {
+            $this->db->from($this->table);
+            $this->db->where($this->primaryKey, $userId);
+            return $this->db->get()->row();
+        } catch (Exception $e) {
+            log_message('error', 'Error fetching user with ID ' . $userId . ': ' . $e->getMessage());
+            return null;
+        }
     }
 
     public function create($dataUser)
     {
-        return $this->db->insert($this->table, $dataUser);
+        try {
+            return $this->db->insert($this->table, $dataUser);
+        } catch (Exception $e) {
+            log_message('error', 'Error creating user: ' . $e->getMessage());
+            return false;
+        }
     }
 
     public function user_email($email)
     {
-        $this->db->where('email', $email);
-        return $this->db->get($this->table)->row();
+        try {
+            $this->db->where('email', $email);
+            return $this->db->get($this->table)->row();
+        } catch (Exception $e) {
+            log_message('error', 'Error fetching user with email ' . $email . ': ' . $e->getMessage());
+            return null;
+        }
     }
 }

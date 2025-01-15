@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
-<nav class="bg-gray-800 fixed top-0 left-0 right-0 z-50" x-data="{ isOpen: false, isOpenNav: false }">
+<nav class="bg-gray-800 fixed top-0 left-0 right-0 z-40" x-data="{ isOpen: false, isOpenNav: false }">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -42,7 +42,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     </div>
                 </div>
             </div>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <div class="absolute inset-y-0 right-0 flex items-center gap-x-5 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <a href="<?= site_url("guest/cart") ?>" type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <span class="absolute -inset-1.5"></span>
+                    <span class="sr-only">View notifications</span>
+                    <i class="fa-solid fa-cart-shopping fa-lg px-0.5 py-3 inline-block"></i>
+                </a>
                 <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span class="absolute -inset-1.5"></span>
                     <span class="sr-only">View notifications</span>
@@ -81,11 +86,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         @click.outside="isOpen = false"
                         class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100 outline-none", Not Active: "" -->
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 space-x-2" role="menuitem" tabindex="-1" id="user-menu-item-0">
                             <i class="fa-solid fa-user"></i>
                             <span>Your Profile</span>
                         </a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 space-x-2" role="menuitem" tabindex="-1" id="user-menu-item-1">
                             <i class="fa-solid fa-gear"></i>
                             <span>Settings</span>
                         </a>
@@ -93,7 +98,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         $isLogin = $this->session->userdata('is_login');
                         if ($isLogin):
                         ?>
-                            <a href="<?= site_url('user/logout') ?>" class="block px-4 py-2 text-sm text-red-700" role="menuitem" tabindex="-1" id="user-menu-item-2">
+                            <a href="<?= site_url('guest/order') ?>" class="block px-4 py-2 text-sm text-gray-700 space-x-2" role="menuitem" tabindex="-1" id="user-menu-item-1">
+                                <i class="fa-solid fa-bag-shopping"></i>
+                                <span>Order</span>
+                            </a>
+                            <a href="<?= site_url('user/logout') ?>" class="block px-4 py-2 text-sm text-red-700 space-x-2" role="menuitem" tabindex="-1" id="user-menu-item-2">
                                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                 <span>Sign out</span>
                             </a>

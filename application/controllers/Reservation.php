@@ -11,16 +11,6 @@ class Reservation extends CI_Controller
         is_login();
     }
 
-    public function validation()
-    {
-        $this->form_validation->set_rules('full_name', 'Full Name', 'trim|required');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required');
-        $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|required');
-        $this->form_validation->set_rules('identity_type', 'Identitiy', 'trim|required');
-        $this->form_validation->set_rules('identity_number', 'Identity Number', 'trim|required');
-        $this->form_validation->set_rules('payment_method', 'Payment Method', 'trim|required');
-    }
-
     public function date()
     {
         $year = date('Y');
@@ -34,16 +24,7 @@ class Reservation extends CI_Controller
         ];
     }
 
-    public function index($hotelId)
-    {
-        $reservations = $this->reservation_model->get_reservation_hotel($hotelId);
-        $data = [
-            'title' => 'Reservation',
-            'hotelId' => $hotelId,
-            'reservations' => $reservations
-        ];
-        $this->load->view('admin/reservation/index', $data);
-    }
+    public function index() {}
 
     public function show($hotelId, $reservationId)
     {
@@ -78,7 +59,11 @@ class Reservation extends CI_Controller
             'amount' => $amount
         ];
 
-        $this->load->view('admin/reservation/create', $data);
+        if ($this->session->userdata('role') === 'admin') {
+            $this->load->view('admin/reservation/create', $data);
+        } else {
+            $this->load->view('reservation', $data);
+        }
     }
 
     public function store($hotelId, $roomId)
@@ -89,63 +74,25 @@ class Reservation extends CI_Controller
         if ($this->form_validation->run() === FALSE) {
             redirect("hotel/$hotelId/room/$roomId/reservation");
         } else {
-            $userId = $this->input->post('user_account');
-            $fullName = $this->input->post('full_name');
-            $roomCodeId = $this->input->post('room_code');
-            $email = $this->input->post('email');
-            $phoneNumber = $this->input->post('phone_number');
-            $identityType = $this->input->post('identity_type');
-            $identityNumber = $this->input->post('identity_number');
-            $chcekIn = $this->input->post('check_in');
-            $chcekOut = $this->input->post('check_out');
-            $paymentMethod = $this->input->post('payment_method');
-            $amount = $this->input->post('amount');
+            $data = $this->get_data_input();
+            $reservation = $data['reservation'];
+            $payment = $data['payment'];
 
-            $in = new DateTime($chcekIn);
-            $out = new DateTime($chcekOut);
-            $day = $in->diff($out)->days;
-
-            $dataReservation = [
-                'room_code_id' => $roomCodeId,
-                'full_name' => $fullName,
-                'email' => $email,
-                'phone_number' => $phoneNumber,
-                'check_in' => $chcekIn,
-                'check_out' => $chcekOut,
-                'total_days' => $day,
-                'identity' => $identityType,
-                'identity_number' => $identityNumber
-            ];
-
-            if ($userId == '') {
-                $dataReservation['user_id'] = null;
-            } else {
-                $dataReservation['user_id'] = $userId;
+            if ($payment['payment_method'] === 'cash') {
+                $payment['payment_status'] = 'completed';
             }
-
-            $dataPayment = [
-                'invoice' => '',
-                'payment_method' => $paymentMethod,
-                'payment_deadline' => '-',
-                'amount' => $amount
-            ];
 
             // generate invoice
             $date = $this->date();
-            $roomCode = $this->room_code_model->find($roomCodeId)->room_code;
+            $roomCode = $this->room_code_model->find($reservation['room_code_id'])->room_code;
             $invoice = $this->payment_model->generateInvoice($hotelId, $roomCode, $date);
-            $dataPayment['invoice'] = $invoice;
+            $payment['invoice'] = $invoice;
 
-            // deadline
-            $epocTomorrow = strtotime('+1 day');
-            $tomorrow = date('Y-m-d H:m:s', $epocTomorrow);
-            $dataPayment['payment_deadline'] = $tomorrow;
-
-            $store = $this->reservation_model->insert_multiple_tables($dataReservation, $dataPayment);
+            $store = $this->reservation_model->insert_multiple_tables($reservation, $payment);
             if ($store === TRUE) {
-                $this->session->set_flashdata('success', '');
+                $this->session->set_flashdata('success', 'Reservasi Berhasil');
             } else {
-                $this->session->set_flashdata('failed', '');
+                $this->session->set_flashdata('failed', 'Reservasi Gagal');
             }
             redirect("hotel/$hotelId/room");
         }
@@ -162,7 +109,7 @@ class Reservation extends CI_Controller
         guard('admin');
     }
 
-    public function guest_in($hotelId, $roomCodeId, $reservationId)
+    public function check_in($hotelId, $roomCodeId, $reservationId)
     {
         guard('admin');
         $check_in = $this->reservation_model->update($reservationId, ['reservation_status' => 'in_house']);
@@ -174,7 +121,7 @@ class Reservation extends CI_Controller
         redirect("hotel/$hotelId/reservation");
     }
 
-    public function guest_out($hotelId, $roomCodeId, $reservationId)
+    public function check_out($hotelId, $roomCodeId, $reservationId)
     {
         guard('admin');
         $check_out = $this->reservation_model->update($reservationId, ['reservation_status' => 'out_house']);
@@ -186,7 +133,7 @@ class Reservation extends CI_Controller
         redirect("hotel/$hotelId/reservation");
     }
 
-    public function guest_cancel($hotelId, $roomCodeId, $reservationId)
+    public function reservation_cancel($hotelId, $roomCodeId, $reservationId)
     {
         $this->load->model('payment_model');
         guard('admin');
@@ -209,24 +156,94 @@ class Reservation extends CI_Controller
         $endDate = $this->input->get('end');
 
         if (empty($startDate) || empty($endDate) || $startDate > $endDate) {
-            $startDate = date('Y-m-d');
+            $startDate = date('Y-m-d', strtotime('-1 days'));
             $endDate = date('Y-m-d', strtotime('+30 days'));
         };
 
         $roomCode = $this->room_model->get_room_code($hotelId);
         $reservations = $this->reservation_model->get_reservation($hotelId, $startDate, $endDate);
+        $dates = $this->generateDateRange($startDate, $endDate);
 
         $data = [
             'title' => 'Kalender',
             'hotelId' => $hotelId,
-            'dates' => $this->generateDateRange($startDate, $endDate),
+            'dates' => $dates,
             'room_code' => $roomCode,
             'reservations' => $reservations,
-            'startDate' => $startDate,
-            'endDate' => $endDate
+            'startDate' => current($dates),
+            'endDate' => end($dates)
         ];
 
         $this->load->view("admin/reservation/calendar", $data);
+    }
+
+    public function guest_reservation($hotelId, $roomId)
+    {
+        $this->load->model('room_model');
+        $this->load->model('service_model');
+
+        $room = $this->room_model->find($roomId);
+        $checkIn = $this->input->get('check_in');
+        $checkOut = $this->input->get('check_out');
+        $in = new DateTime($checkIn);
+        $out = new DateTime($checkOut);
+        $totalDate = $in->diff($out)->d;
+        $price =  number_format($room->price, 0, '', '');
+        $amount = $totalDate * $price;
+        $services = $this->service_model->all();
+        $data = [
+            'title' => 'Reservasi',
+            'hotelId' => $hotelId,
+            'roomId' => $roomId,
+            'room' => $room,
+            'checkIn' => $checkIn,
+            'checkOut' => $checkOut,
+            'amount' => $amount,
+            'services' => $services
+        ];
+        $this->load->view('reservation', $data);
+    }
+
+    public function guest_store($hotelId, $roomId)
+    {
+        $this->load->model('reservation_model');
+        $this->load->model('room_code_model');
+        $this->load->model('payment_model');
+
+        $this->validation();
+        if ($this->form_validation->run() === FALSE) {
+            $in = $this->input->post('check_in');
+            $out = $this->input->post('check_out');
+            redirect("guest/hotel/$hotelId/room/$roomId/reservation?check_in=$in&check_out=$out");
+        } else {
+            $data = $this->get_data_input();
+            $room = $this->reservation_model->get_reservation_room($roomId);
+            shuffle($room);
+            $randomRoom = reset($room);
+            $userId = $this->session->userdata('user_id');
+
+            $reservation = $data['reservation'];
+            $payment = $data['payment'];
+            $reservation['room_code_id'] = $randomRoom->room_code_id;
+            $reservation['user_id'] = $userId;
+
+            // generate invoice
+            $date = $this->date();
+            $roomCode = $this->room_code_model->find($reservation['room_code_id'])->room_code;
+            $invoice = $this->payment_model->generateInvoice($hotelId, $roomCode, $date);
+            $payment['invoice'] = $invoice;
+
+            $reservationRequest = $data['reservation_request'];
+            $services = $data['services'];
+
+            $store = $this->reservation_model->insert_multiple_tables($reservation, $payment, $reservationRequest, $services);
+            if ($store === TRUE) {
+                $this->session->set_flashdata('success', 'Reservasi Berhasil');
+            } else {
+                $this->session->set_flashdata('failed', 'Reservasi Gagal');
+            }
+            redirect("guest/order");
+        }
     }
 
     private function generateDateRange($startDate, $endDate)
@@ -241,5 +258,81 @@ class Reservation extends CI_Controller
         }
 
         return $dateRange;
+    }
+
+    public function validation()
+    {
+        $this->form_validation->set_rules('full_name', 'Full Name', 'trim|required');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required');
+        $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|required');
+        $this->form_validation->set_rules('identity_type', 'Identitiy', 'trim|required');
+        $this->form_validation->set_rules('identity_number', 'Identity Number', 'trim|required');
+        $this->form_validation->set_rules('payment_method', 'Payment Method', 'trim|required');
+        $this->form_validation->set_rules('request', 'Request', 'trim');
+        $this->form_validation->set_rules('note', 'Note', 'trim');
+    }
+
+    private function get_data_input()
+    {
+        $servicesSelect = [];
+        $fullName = $this->input->post('full_name');
+        $roomCodeId = $this->input->post('room_code_id');
+        $email = $this->input->post('email');
+        $phoneNumber = $this->input->post('phone_number');
+        $identityType = $this->input->post('identity_type');
+        $identityNumber = $this->input->post('identity_number');
+        $checkIn = $this->input->post('check_in');
+        $checkOut = $this->input->post('check_out');
+
+        $paymentMethod = $this->input->post('payment_method');
+        $amount = $this->input->post('amount');
+
+        $request = $this->input->post('request');
+        $note = $this->input->post('note');
+
+        $in = new DateTime($checkIn);
+        $out = new DateTime($checkOut);
+        $day = $in->diff($out)->days;
+
+        $services = $this->input->post('services');
+        $quantity = $this->input->post('quantity');
+        $service_price = $this->input->post('service_price');
+
+        if (isset($services) && isset($quantity) && isset($service_price)) {
+            foreach ($services as $index => $serviceId) {
+                $data = [
+                    'service_id' => $serviceId,
+                    'quantity' => $quantity[$index],
+                    'total_price' => $service_price[$index] * $quantity[$index]
+                ];
+                array_push($servicesSelect, $data);
+            }
+        }
+
+        return [
+            'reservation' => [
+                'room_code_id' => $roomCodeId,
+                'full_name' => $fullName,
+                'email' => $email,
+                'phone_number' => $phoneNumber,
+                'check_in' => $checkIn,
+                'check_out' => $checkOut,
+                'total_days' => $day,
+                'identity' => $identityType,
+                'identity_number' => $identityNumber,
+                'created_at' => date('Y-m-d')
+            ],
+            'payment' => [
+                'payment_method' => $paymentMethod,
+                'amount' => str_replace('.', '', $amount),
+                'booking_time' => date('Y-m-d H:i:s'),
+                'expire_time' => date('Y-m-d H:i:s', strtotime('+1 day'))
+            ],
+            'reservation_request' => [
+                'request' => $request,
+                'note' => $note
+            ],
+            'services' => $servicesSelect
+        ];
     }
 }

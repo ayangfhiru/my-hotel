@@ -4,217 +4,126 @@ $this->load->view('templates/header');
 ?>
 
 <div class="container">
-    <div class="pt-6">
+    <!-- Image gallery -->
+    <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 overflow-hidden">
+        <img src="<?= site_url("assets/thumbnail/" . ($hotel->thumbnail ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="w-full rounded-lg object-cover lg:block">
+        <div class="flex flex-col gap-y-6 justify-between">
+            <img src="<?= site_url("assets/pictures/" . ($pictures[0]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/1] w-full rounded-lg object-cover">
+            <img src="<?= site_url("assets/pictures/" . ($pictures[1]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/2] w-full rounded-lg object-cover">
+            <img src="<?= site_url("assets/pictures/" . ($pictures[3]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/1] w-full rounded-lg object-cover">
+        </div>
+        <div class="flex flex-col gap-y-6">
+            <img src="<?= site_url("assets/pictures/" . ($pictures[2]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/3] w-full rounded-lg object-cover">
+            <img src="<?= site_url("assets/pictures/" . ($pictures[3]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[4/2] w-full rounded-lg object-cover">
+        </div>
+    </div>
 
+    <!-- Product info -->
+    <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+        <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"><?= $hotel->name; ?></h1>
+        </div>
 
-        <!-- Image gallery -->
-        <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-            <img src="<?= site_url("assets/thumbnail/$hotel->thumbnail") ?>" alt="<?= $hotel->name ?>" class="hidden size-full rounded-lg object-cover lg:block">
-            <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                <img src="<?= site_url("assets/pictures/{$pictures[0]->picture}") ?>" alt="<?= $hotel->name ?>" class="aspect-[3/2] w-full rounded-lg object-cover">
-                <img src="<?= site_url("assets/pictures/{$pictures[1]->picture}") ?>" alt="<?= $hotel->name ?>" class="aspect-[3/2] w-full rounded-lg object-cover">
+        <!-- Options -->
+        <div class="mt-4 lg:row-span-3 lg:mt-0">
+            <h2 class="sr-only">Hotel information</h2>
+            <div class="mt-6">
+                <h3 class="sr-only">Reviews</h3>
+                <div class="flex items-center">
+                    <div class="flex items-center">
+                        <!-- Active: "text-gray-900", Default: "text-gray-200" -->
+                        <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                        </svg>
+                        <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                        </svg>
+                        <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                        </svg>
+                        <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                        </svg>
+                        <svg class="size-5 shrink-0 text-gray-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <p class="sr-only">4 out of 5 stars
+                    </p>
+                    <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">117 reviews</a>
+                </div>
             </div>
-            <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                <img src="<?= site_url("assets/pictures/{$pictures[2]->picture}") ?>" alt="<?= $hotel->name ?>" class="aspect-[3/2] w-full rounded-lg object-cover">
-                <img src="<?= site_url("assets/pictures/{$pictures[3]->picture}") ?>" alt="<?= $hotel->name ?>" class="aspect-[3/2] w-full rounded-lg object-cover">
+
+            <!-- Sizes -->
+            <div class="mt-10">
+                <h3 class="text-lg font-medium text-gray-900">Fasilitas</h3>
+                <div class="grid grid-cols-3 mt-4 gap-x-2 gap-y-5">
+                    <?php
+                    $displayedFacilities = [];
+                    foreach ($facilities as $facility):
+                        if (!in_array($facility->facility_name, $displayedFacilities)):
+                            $displayedFacilities[] = $facility->facility_name;
+                    ?>
+                            <div class="flex gap-x-1 items-center">
+                                <i class="<?= $facility->icon ?> fa-lg"></i>
+                                <p class="text-sm"><?= $facility->facility_name; ?></p>
+                            </div>
+                    <?php endif;
+                    endforeach; ?>
+                </div>
             </div>
         </div>
 
-        <!-- Product info -->
-        <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-            <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"><?= $hotel->name; ?></h1>
+        <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+            <div>
+                <h3 class="sr-only">Description</h3>
+
+                <div class="space-y-6">
+                    <p class="text-base text-gray-900"><?= $hotel->description; ?></p>
+                </div>
             </div>
-
-            <!-- Options -->
-            <div class="mt-4 lg:row-span-3 lg:mt-0">
-                <h2 class="sr-only">Hotel information</h2>
-                <p class="text-3xl tracking-tight text-gray-900">$192</p>
-
-                <!-- Reviews -->
-                <div class="mt-6">
-                    <h3 class="sr-only">Reviews</h3>
-                    <div class="flex items-center">
-                        <div class="flex items-center">
-                            <!-- Active: "text-gray-900", Default: "text-gray-200" -->
-                            <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                            </svg>
-                            <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                            </svg>
-                            <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                            </svg>
-                            <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                            </svg>
-                            <svg class="size-5 shrink-0 text-gray-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <p class="sr-only">4 out of 5 stars</p>
-                        <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">117 reviews</a>
-                    </div>
-                </div>
-
-                <form class="mt-10">
-                    <!-- Colors -->
-                    <div>
-                        <h3 class="text-sm font-medium text-gray-900">Color</h3>
-
-                        <fieldset aria-label="Choose a color" class="mt-4">
-                            <div class="flex items-center gap-x-3">
-                                <!-- Active and Checked: "ring ring-offset-1" -->
-                                <label aria-label="White" class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 ring-gray-400 focus:outline-none">
-                                    <input type="radio" name="color-choice" value="White" class="sr-only">
-                                    <span aria-hidden="true" class="size-8 rounded-full border border-black/10 bg-white"></span>
-                                </label>
-                                <!-- Active and Checked: "ring ring-offset-1" -->
-                                <label aria-label="Gray" class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 ring-gray-400 focus:outline-none">
-                                    <input type="radio" name="color-choice" value="Gray" class="sr-only">
-                                    <span aria-hidden="true" class="size-8 rounded-full border border-black/10 bg-gray-200"></span>
-                                </label>
-                                <!-- Active and Checked: "ring ring-offset-1" -->
-                                <label aria-label="Black" class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 ring-gray-900 focus:outline-none">
-                                    <input type="radio" name="color-choice" value="Black" class="sr-only">
-                                    <span aria-hidden="true" class="size-8 rounded-full border border-black/10 bg-gray-900"></span>
-                                </label>
+            <div class="mt-10">
+                <h3 class="text-lg font-medium text-gray-900">Room</h3>
+                <div class="mt-4 flex flex-col gap-y-5">
+                    <?php foreach ($rooms as $room): ?>
+                        <a href="<?= site_url("guest/hotel/$hotelId/room/$room->room_id/reservation?check_in=$checkIn&check_out=$checkOut") ?>" class="relative block">
+                            <div class="w-full h-48 p-4 rounded-lg shadow bg-gray-200 cursor-pointer text-gray-700">
+                                <h1 class="text-2xl font-semibold"><?= $room->room_type; ?></h1>
+                                <div class="flex gap-x-10">
+                                    <div class="flex flex-col gap-y-3">
+                                        <span class="flex gap-x-2 items-center">
+                                            <i class="fa-solid fa-bed fa-lg"></i>
+                                            <p class="text-lg"><?= $room->bed_name; ?></p>
+                                        </span>
+                                        <span class="flex gap-x-2 items-center">
+                                            <i class="fa-solid fa-user fa-lg"></i>
+                                            <p class="text-lg"><?= $room->capacity; ?></p>
+                                        </span>
+                                    </div>
+                                    <ul class="grid grid-cols-4 items-start gap-x-4 gap-y-3">
+                                        <?php
+                                        foreach ($facilities as $facility):
+                                            if ($room->room_id === $facility->room_id):
+                                        ?>
+                                                <li class="flex gap-x-2 items-center">
+                                                    <i class="<?= $facility->icon ?> fa-lg"></i>
+                                                    <p class="text-sm"><?= $facility->facility_name; ?></p>
+                                                </li>
+                                        <?php endif;
+                                        endforeach; ?>
+                                    </ul>
+                                </div>
+                                <div class="flex mt-5 justify-between items-center bg-orange-300">
+                                    <h2 class="text-lg">IDR <?= number_format($room->price); ?></h2>
+                                    <a href="<?= site_url("guest/cart/room/$room->room_id/add?check_in=$checkIn&check_out=$checkOut") ?>" class="px-4 py-2 bg-blue-400 rounded-md text-white">Tambah Keranjang</a>
+                                </div>
                             </div>
-                        </fieldset>
-                    </div>
-
-                    <!-- Sizes -->
-                    <div class="mt-10">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-medium text-gray-900">Size</h3>
-                            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size guide</a>
-                        </div>
-
-                        <fieldset aria-label="Choose a size" class="mt-4">
-                            <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                                <!-- Active: "ring-2 ring-indigo-500" -->
-                                <label class="group relative flex cursor-not-allowed items-center justify-center rounded-md border bg-gray-50 px-4 py-3 text-sm font-medium uppercase text-gray-200 hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                                    <input type="radio" name="size-choice" value="XXS" disabled class="sr-only">
-                                    <span>XXS</span>
-                                    <span aria-hidden="true" class="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200">
-                                        <svg class="absolute inset-0 size-full stroke-2 text-gray-200" viewBox="0 0 100 100" preserveAspectRatio="none" stroke="currentColor">
-                                            <line x1="0" y1="100" x2="100" y2="0" vector-effect="non-scaling-stroke" />
-                                        </svg>
-                                    </span>
-                                </label>
-                                <!-- Active: "ring-2 ring-indigo-500" -->
-                                <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                                    <input type="radio" name="size-choice" value="XS" class="sr-only">
-                                    <span>XS</span>
-                                    <!--
-                    Active: "border", Not Active: "border-2"
-                    Checked: "border-indigo-500", Not Checked: "border-transparent"
-                  -->
-                                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                                </label>
-                                <!-- Active: "ring-2 ring-indigo-500" -->
-                                <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                                    <input type="radio" name="size-choice" value="S" class="sr-only">
-                                    <span>S</span>
-                                    <!--
-                    Active: "border", Not Active: "border-2"
-                    Checked: "border-indigo-500", Not Checked: "border-transparent"
-                  -->
-                                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                                </label>
-                                <!-- Active: "ring-2 ring-indigo-500" -->
-                                <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                                    <input type="radio" name="size-choice" value="M" class="sr-only">
-                                    <span>M</span>
-                                    <!--
-                    Active: "border", Not Active: "border-2"
-                    Checked: "border-indigo-500", Not Checked: "border-transparent"
-                  -->
-                                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                                </label>
-                                <!-- Active: "ring-2 ring-indigo-500" -->
-                                <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                                    <input type="radio" name="size-choice" value="L" class="sr-only">
-                                    <span>L</span>
-                                    <!--
-                    Active: "border", Not Active: "border-2"
-                    Checked: "border-indigo-500", Not Checked: "border-transparent"
-                  -->
-                                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                                </label>
-                                <!-- Active: "ring-2 ring-indigo-500" -->
-                                <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                                    <input type="radio" name="size-choice" value="XL" class="sr-only">
-                                    <span>XL</span>
-                                    <!--
-                    Active: "border", Not Active: "border-2"
-                    Checked: "border-indigo-500", Not Checked: "border-transparent"
-                  -->
-                                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                                </label>
-                                <!-- Active: "ring-2 ring-indigo-500" -->
-                                <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                                    <input type="radio" name="size-choice" value="2XL" class="sr-only">
-                                    <span>2XL</span>
-                                    <!--
-                    Active: "border", Not Active: "border-2"
-                    Checked: "border-indigo-500", Not Checked: "border-transparent"
-                  -->
-                                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                                </label>
-                                <!-- Active: "ring-2 ring-indigo-500" -->
-                                <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                                    <input type="radio" name="size-choice" value="3XL" class="sr-only">
-                                    <span>3XL</span>
-                                    <!--
-                    Active: "border", Not Active: "border-2"
-                    Checked: "border-indigo-500", Not Checked: "border-transparent"
-                  -->
-                                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                                </label>
-                            </div>
-                        </fieldset>
-                    </div>
-
-                    <button type="submit" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
-                </form>
-            </div>
-
-            <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-                <!-- Description and details -->
-                <div>
-                    <h3 class="sr-only">Description</h3>
-
-                    <div class="space-y-6">
-                        <p class="text-base text-gray-900"><?= $hotel->description; ?></p>
-                    </div>
-                </div>
-
-                <div class="mt-10">
-                    <h3 class="text-sm font-medium text-gray-900">Highlights</h3>
-
-                    <div class="mt-4">
-                        <ul role="list" class="list-disc space-y-2 pl-4 text-sm">
-                            <li class="text-gray-400"><span class="text-gray-600">Hand cut and sewn locally</span></li>
-                            <li class="text-gray-400"><span class="text-gray-600">Dyed with our proprietary colors</span></li>
-                            <li class="text-gray-400"><span class="text-gray-600">Pre-washed &amp; pre-shrunk</span></li>
-                            <li class="text-gray-400"><span class="text-gray-600">Ultra-soft 100% cotton</span></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="mt-10">
-                    <h2 class="text-sm font-medium text-gray-900">Details</h2>
-
-                    <div class="mt-4 space-y-6">
-                        <p class="text-sm text-gray-600">The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming &quot;Charcoal Gray&quot; limited release.</p>
-                    </div>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 <?php $this->load->view('templates/footer'); ?>

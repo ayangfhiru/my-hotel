@@ -40,7 +40,7 @@ $this->load->view('admin/_partials/header');
                 </div>
                 <div class="form-floating mb-3">
                     <label for="description">Deskripsi</label>
-                    <textarea class="form-control" id="description" name="description" placeholder="Deskripsi Hotel" style="height: 100px"><?= $hotel->description ?></textarea>
+                    <textarea rows="7" class="form-control" id="description" name="description" placeholder="Deskripsi Hotel" style="height: 300px"><?= $hotel->description ?></textarea>
                 </div>
                 <div class="col-5 custom-file mb-3">
                     <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">

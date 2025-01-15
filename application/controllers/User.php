@@ -58,8 +58,13 @@ class User extends CI_Controller
                         'role' => $user->role,
                         'is_login' => TRUE
                     ];
+                    $this->session->set_flashdata('success', 'Login Success');
                     $this->session->set_userdata($dataSession);
-                    redirect('home');
+                    if ($user->role === 'admin') {
+                        redirect('hotel');
+                    } else {
+                        redirect('guest');
+                    }
                 } else {
                     $this->session->set_flashdata('failed', 'Password!');
                     $this->load->view('auth/sign-in');

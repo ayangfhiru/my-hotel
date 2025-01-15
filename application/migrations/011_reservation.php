@@ -51,19 +51,11 @@ class Migration_Reservation extends CI_Migration
                 'constraint' => 20,
             ],
             'reservation_status' => [
-                'type' => 'ENUM("pending","confirmed","cancelled")',
+                'type' => 'ENUM("pending", "confirmed", "checked_in", "in_house", "checked_out", "cancelled", "no_show", "waitlisted", "refunded")',
                 'default' => 'pending'
             ],
             'created_at' => [
-                'type' => 'BIGINT',
-            ],
-            'updated_at' => [
-                'type' => 'BIGINT',
-                'null' => true
-            ],
-            'deleted_at' => [
-                'type' => 'BIGINT',
-                'null' => true
+                'type' => 'DATE',
             ]
         ]);
         $this->dbforge->add_key('reservation_id', TRUE);

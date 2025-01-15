@@ -4,7 +4,15 @@
          <div class="modal-content">
              <div class="modal-header">
                  <div class="w-100 d-flex justify-content-between align-items-center mr-3">
-                     <h5 class="modal-title" id="staticBackdropLabel">Detail</h5>
+                     <div class="flex gap-x-3 items-center">
+                         <h5 class="modal-title" id="staticBackdropLabel">
+                             Detail
+                         </h5>
+                         <a :href="'<?= base_url() ?>reservation/'+ reservationId +'/detail'" target="_blank">
+                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                         </a>
+                     </div>
+
                      <a x-bind:href="'<?= site_url() ?>reservation/' + reservationId + '/invoice'" target="_blank">
                          <i class="fa-solid fa-print fa-2xl"></i>
                      </a>
@@ -15,38 +23,20 @@
              </div>
              <div class="modal-body">
                  <div class="mb-3">
-                     <label class="form-label">Invoice</label>
-                     <input :value="invoice" class="form-control" disabled>
-                 </div>
-                 <div class="mb-3">
                      <label class="form-label">Full Name</label>
                      <input :value="fullName" class="form-control" disabled>
                  </div>
-                 <div class="mb-3">
-                     <label class="form-label">Status</label>
-                     <input :value="resStatus.replace('_', ' ')" class="form-control text-capitalize" disabled>
-                 </div>
                  <div class="mb-3 row">
                      <div class="col">
-                         <label class="form-label">Identity</label>
-                         <input :value="identity" class="form-control text-uppercase" disabled>
+                         <label class="form-label">Reservation</label>
+                         <input :value="resStatus" class="form-control text-capitalize" disabled>
                      </div>
                      <div class="col">
-                         <label class="form-label">Identity Number</label>
-                         <input :value="identityNum" class="form-control" disabled>
+                         <label class="form-label">Payment</label>
+                         <input :value="payStatus" class="form-control text-capitalize" disabled>
                      </div>
                  </div>
-                 <div class="mb-3 row">
-                     <div class="col">
-                         <label class="form-label">Email</label>
-                         <input :value="email" class="form-control" disabled>
-                     </div>
-                     <div class="col">
-                         <label class="form-label">Phone Number</label>
-                         <input :value="phoneNum" class="form-control" disabled>
-                     </div>
-                 </div>
-                 <div class="row">
+                 <div class="row mb-3">
                      <div class="col">
                          <label class="form-label">Payment Method</label>
                          <input :value="payMethod" class="form-control text-capitalize" disabled>
@@ -56,12 +46,18 @@
                          <input :value="amount" class="form-control" disabled>
                      </div>
                  </div>
+                 <div x-show="note">
+                     <label class="form-label">Note</label>
+                     <textarea class="form-control" id="note" rows="3" x-model="note" disabled></textarea>
+                 </div>
              </div>
              <div class="modal-footer">
                  <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
 
+                 <button x-show="payStatus === 'pending'" data-dismiss="modal" data-toggle="modal" data-target="#modalPaymentDetail" class="btn btn-success">Detail Payment</button>
+
                  <button x-show="resStatus === 'pending'" type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#modalReservationCancelled">
-                     Cancelled
+                     Pembalatalan
                  </button>
 
                  <a x-show="resStatus === 'pending'"

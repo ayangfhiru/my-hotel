@@ -8,44 +8,72 @@ class Cancel_reservation_model extends CI_Model
 
     public function all()
     {
-        return $this->db->get($this->table)->result();
+        try {
+            return $this->db->get($this->table)->result();
+        } catch (Exception $e) {
+            log_message('error', 'Error fetching all cancel reservations: ' . $e->getMessage());
+            return [];
+        }
     }
 
     public function find($id)
     {
-        $this->db->from($this->table);
-        $this->db->where($this->primaryKey, $id);
-        return $this->db->get()->row();
+        try {
+            $this->db->from($this->table);
+            $this->db->where($this->primaryKey, $id);
+            return $this->db->get()->row();
+        } catch (Exception $e) {
+            log_message('error', 'Error finding cancel reservation with ID ' . $id . ': ' . $e->getMessage());
+            return null;
+        }
     }
 
     public function create($data)
     {
-        return $this->db->insert($this->table, $data);
+        try {
+            return $this->db->insert($this->table, $data);
+        } catch (Exception $e) {
+            log_message('error', 'Error creating cancel reservation: ' . $e->getMessage());
+            return false;
+        }
     }
 
     public function update($id, $data)
     {
-        $this->db->where($this->primaryKey, $id);
-        return $this->db->update($this->table, $data);
+        try {
+            $this->db->where($this->primaryKey, $id);
+            return $this->db->update($this->table, $data);
+        } catch (Exception $e) {
+            log_message('error', 'Error updating cancel reservation with ID ' . $id . ': ' . $e->getMessage());
+            return false;
+        }
     }
 
     public function delete($id)
     {
-        return $this->db->delete($this->table, [$this->primaryKey => $id]);
+        try {
+            return $this->db->delete($this->table, [$this->primaryKey => $id]);
+        } catch (Exception $e) {
+            log_message('error', 'Error deleting cancel reservation with ID ' . $id . ': ' . $e->getMessage());
+            return false;
+        }
     }
 
-    // insert cancel_reservation dan update reservation -> reservation_status
     public function create_multiple_tables($dataCancelled, $reservationId)
     {
-        $this->db->trans_start();
-        // insert cancel_reservation
-        $this->db->insert($this->table, $dataCancelled);
-        // update reservation -> reservation_status to cancelled
-        $this->db->where('reservation_id', $reservationId);
-        $this->db->update('reservations', ['reservation_status' => 'cancelled']);
-        if ($this->db->trans_complete()) {
-            return true;
-        } else {
+        try {
+            $this->db->trans_start();
+            $this->db->insert($this->table, $dataCancelled);
+            $this->db->where('reservation_id', $reservationId);
+            $this->db->update('reservations', ['reservation_status' => 'cancelled']);
+            if ($this->db->trans_complete()) {
+                return true;
+            } else {
+                $this->db->trans_rollback();
+                return false;
+            }
+        } catch (Exception $e) {
+            log_message('error', 'Error in create_multiple_tables: ' . $e->getMessage());
             $this->db->trans_rollback();
             return false;
         }

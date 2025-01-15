@@ -36,8 +36,8 @@ $this->load->view('admin/_partials/header');
                     <?= form_error('full_name', '<span class="text-danger ml-2">', '</span>') ?>
                 </div>
                 <div class="mb-3">
-                    <label for="room_code">Room Code</label>
-                    <select class="form-control" id="room_code" name="room_code">
+                    <label for="room_code_id">Room Code</label>
+                    <select class="form-control" id="room_code_id" name="room_code_id">
                         <?php foreach ($room_code as $code):; ?>
                             <option value="<?= $code->room_code_id ?>"><?= $code->room_code; ?></option>
                         <?php endforeach; ?>

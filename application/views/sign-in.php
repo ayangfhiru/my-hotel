@@ -12,7 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
-<body class="h-full">
+<body class="h-full relative">
+
+    <?php $this->load->view('toast'); ?>
+
     <div class="font-[sans-serif] bg-white max-w-xl flex items-center mx-auto md:h-screen p-4">
         <div class="w-full items-center shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-xl overflow-hidden">
             <form action="<?= site_url('user/login') ?>" method="POST" class="md:col-span-2 w-full py-6 px-6 sm:px-16">
@@ -41,7 +44,7 @@
                         Login
                     </button>
                 </div>
-                <p class="text-gray-800 text-sm mt-6 text-center">Don't have an account? <a href="<?= site_url('sign-up') ?>" class="text-blue-600 font-semibold hover:underline ml-1">Sign up</a></p>
+                <p class="text-gray-800 text-sm mt-6 text-center">Don't have an account? <a href="<?= site_url('user/register') ?>" class="text-blue-600 font-semibold hover:underline ml-1">Sign up</a></p>
             </form>
         </div>
     </div>

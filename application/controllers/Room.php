@@ -145,6 +145,7 @@ class Room extends CI_Controller
 
     public function search_room_available($hotelId)
     {
+        $this->load->model('facility_model');
         $this->form_validation->set_rules('check_in', 'Check In', 'required');
         $this->form_validation->set_rules('check_out', 'Check Out', 'required');
         if ($this->form_validation->run() === FALSE) {
@@ -154,14 +155,43 @@ class Room extends CI_Controller
             $checkOut = $this->input->post('check_out');
 
             $rooms = $this->room_model->search_room($hotelId, $checkIn, $checkOut);
+            $facilities = $this->facility_model->search_facility($hotelId);
 
             $data = [
-                'hotelId' => $hotelId,
                 'title' => 'Search Room',
-                'rooms' => $rooms
+                'hotelId' => $hotelId,
+                'rooms' => $rooms,
+                'facilities' => $facilities
             ];
 
             $this->load->view('admin/room/search', $data);
         }
+    }
+
+    public function guest_room($hotelId)
+    {
+        $this->load->model('hotel_model');
+        $this->load->model('room_model');
+        $this->load->model('room_picture_model');
+        $this->load->model('facility_model');
+
+        $checkIn = $this->input->get('check_in') ?? date('Y-m-d');
+        $checkOut = $this->input->get('check_out') ?? date('Y-m-d', strtotime('+1 day'));
+        $hotel = $this->hotel_model->find($hotelId);
+        $rooms = $this->room_model->search_room($hotelId, $checkIn, $checkOut);
+        $pictures = $this->room_picture_model->get_picture($hotelId);
+        $facilities = $this->facility_model->search_facility($hotelId);
+
+        $data = [
+            'title' => 'Detail',
+            'hotelId' => $hotelId,
+            'hotel' => $hotel,
+            'rooms' => $rooms,
+            'pictures' => $pictures,
+            'facilities' => $facilities,
+            'checkIn' => $checkIn,
+            'checkOut' => $checkOut
+        ];
+        $this->load->view('detail', $data);
     }
 }

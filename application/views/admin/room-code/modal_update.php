@@ -14,7 +14,7 @@
                      method="POST">
                      <div class="mb-3">
                          <label for="room_code" class="form-label">Room Code</label>
-                         <input type="text" id="room_code" name="room_code" :value="roomCode" value="" class="form-control">
+                         <input type="text" id="room_code" name="room_code" :value="roomCode" class="form-control">
                          <?= form_error('room_code', '<span class="text-danger ml-2">', '</span>') ?>
                      </div>
                      <div class="mb-3">

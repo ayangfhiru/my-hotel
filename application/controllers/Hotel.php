@@ -21,20 +21,38 @@ class Hotel extends CI_Controller
 
     public function index()
     {
-        $role = $this->session->userdata('role');
+        guard('admin');
         $hotels = $this->hotel_model->all();
         $data = [
             'title' => 'Hotel',
             'hotels' => $hotels
         ];
-        if ($role === 'admin') {
-            $this->load->view('admin/hotel/index', $data);
-        } else if ($role === 'tamu') {
-            $this->load->view('home', $data);
-        }
+        $this->load->view('admin/hotel/index', $data);
     }
 
-    public function show($hotelId) {}
+    public function show($hotelId)
+    {
+        $this->load->model('room_model');
+        $this->load->model('room_picture_model');
+        $this->load->model('facility_model');
+        $checkIn = $this->input->get('checkIn') ?? date('Y-m-d');
+        $checkOut = $this->input->get('checkOut') ?? date('Y-m-d', strtotime('+1 day'));
+        $hotel = $this->hotel_model->find($hotelId);
+        $rooms = $this->room_model->search_room($hotelId, $checkIn, $checkOut);
+        $pictures = $this->room_picture_model->get_picture($hotelId);
+        $facilities = $this->facility_model->search_facility($hotelId);
+        $data = [
+            'title' => 'Detail',
+            'hotelId' => $hotelId,
+            'hotel' => $hotel,
+            'rooms' => $rooms,
+            'pictures' => $pictures,
+            'facilities' => $facilities,
+            'checkIn' => $checkIn,
+            'checkOut' => $checkOut
+        ];
+        $this->load->view('detail', $data);
+    }
 
     public function create()
     {
@@ -131,5 +149,20 @@ class Hotel extends CI_Controller
             $this->session->set_flashdata('failed', '');
         }
         redirect('hotel');
+    }
+
+    public function guest_home()
+    {
+        $checkIn = $this->input->get('checkIn') ?? date('Y-m-d');
+        $checkOut = $this->input->get('checkOut') ?? date('Y-m-d', strtotime('+1 day'));
+        $hotels = $this->hotel_model->hotel_available($checkIn, $checkOut);
+
+        $data = [
+            'title' => 'Hotel',
+            'hotels' => $hotels,
+            'checkIn' => $checkIn,
+            'checkOut' => $checkOut
+        ];
+        $this->load->view('home', $data);
     }
 }
