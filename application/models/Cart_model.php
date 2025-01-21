@@ -53,10 +53,12 @@ class Cart_model extends CI_Model
         }
     }
 
-    public function delete($id)
+    public function delete($userId, $roomId)
     {
         try {
-            return $this->db->delete($this->table, [$this->key => $id]);
+            $this->db->where('user_id', $userId);
+            $this->db->where('room_id', $roomId);
+            return $this->db->delete($this->table);
         } catch (Exception $e) {
             log_message('error', 'Error deleting cart with user_id ' . $id . ': ' . $e->getMessage());
             return false;

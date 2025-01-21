@@ -31,7 +31,7 @@ $this->load->view('admin/_partials/header');
                     $index = 1;
                     foreach ($hotels as $hotel) {
                     ?>
-                        <tr class="">
+                        <tr id="hotel-<?= $hotel->hotel_id ?>">
                             <th scope="row" class="text-center"><?= $index++; ?></th>
                             <td><?= $hotel->name ?></td>
                             <td><?= $hotel->address ?></td>
@@ -42,11 +42,11 @@ $this->load->view('admin/_partials/header');
                             </td>
                             <td class="d-flex justify-content-center align-items-center">
                                 <!-- Add Room -->
-                                <a href="<?= site_url("hotel/$hotel->hotel_id/room") ?>" type="button" title="Tambah Kamar" class="d-flex btn btn-primary mx-1 justify-content-center align-items-center" style="max-width: 150px; height: 50px">
+                                <a href="<?= site_url("hotel/$hotel->hotel_id/room") ?>" title="Tambah Kamar" class="d-flex btn btn-primary mx-1 justify-content-center align-items-center" style="max-width: 150px; height: 50px">
                                     <i class="fas fa-solid fa-bed"></i>
                                 </a>
                                 <!-- Update Hotel -->
-                                <a href="<?= site_url("hotel/$hotel->hotel_id/edit") ?>" type="button" title="Edit Hotel" class="d-flex btn btn-warning mx-1 justify-content-center align-items-center" style="max-width: 150px; height: 50px">
+                                <a href="<?= site_url("hotel/$hotel->hotel_id/edit") ?>" title="Edit Hotel" class="d-flex btn btn-warning mx-1 justify-content-center align-items-center" style="max-width: 150px; height: 50px">
                                     <i class="fas fa-solid fa-pen"></i>
                                 </a>
                                 <!-- Delete Hotel -->

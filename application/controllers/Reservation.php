@@ -209,7 +209,7 @@ class Reservation extends CI_Controller
         $this->load->model('reservation_model');
         $this->load->model('room_code_model');
         $this->load->model('payment_model');
-
+        $this->get_data_input();
         $this->validation();
         if ($this->form_validation->run() === FALSE) {
             $in = $this->input->post('check_in');
@@ -269,7 +269,6 @@ class Reservation extends CI_Controller
         $this->form_validation->set_rules('identity_number', 'Identity Number', 'trim|required');
         $this->form_validation->set_rules('payment_method', 'Payment Method', 'trim|required');
         $this->form_validation->set_rules('request', 'Request', 'trim');
-        $this->form_validation->set_rules('note', 'Note', 'trim');
     }
 
     private function get_data_input()
@@ -296,6 +295,7 @@ class Reservation extends CI_Controller
 
         $services = $this->input->post('services');
         $quantity = $this->input->post('quantity');
+        $note = $this->input->post('note');
         $service_price = $this->input->post('service_price');
 
         if (isset($services) && isset($quantity) && isset($service_price)) {
@@ -303,7 +303,8 @@ class Reservation extends CI_Controller
                 $data = [
                     'service_id' => $serviceId,
                     'quantity' => $quantity[$index],
-                    'total_price' => $service_price[$index] * $quantity[$index]
+                    'total_price' => $service_price[$index],
+                    'note' => isset($note[$index]) ? $note[$index] : '',
                 ];
                 array_push($servicesSelect, $data);
             }
@@ -320,7 +321,7 @@ class Reservation extends CI_Controller
                 'total_days' => $day,
                 'identity' => $identityType,
                 'identity_number' => $identityNumber,
-                'created_at' => date('Y-m-d')
+                'created_at' => date('Y-m-d H:i:s')
             ],
             'payment' => [
                 'payment_method' => $paymentMethod,
@@ -330,7 +331,6 @@ class Reservation extends CI_Controller
             ],
             'reservation_request' => [
                 'request' => $request,
-                'note' => $note
             ],
             'services' => $servicesSelect
         ];

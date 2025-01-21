@@ -75,7 +75,6 @@ $route['guest/hotel/(:num)/room'] = "room/guest_room/$1";
 $route['hotel/(:num)/room/(:num)/room-code'] = "roomcode/index/$1/$2";
 $route['hotel/(:num)/room/(:num)/room-code/store'] = "roomcode/store/$1/$2";
 $route['hotel/(:num)/room/(:num)/room-code/(:num)/update'] = "roomcode/update/$1/$2/$3";
-$route['hotel/(:num)/room/(:num)/room-code/(:num)/delete'] = "roomcode/destroy/$1/$2/$3";
 $route['hotel/(:num)/room-code/(:num)/update-status'] = "roomcode/update_room_code_status/$1/$2";
 
 // Reservation Route
@@ -91,7 +90,7 @@ $route['guest/hotel/(:num)/room/(:num)/reservation/store'] = "reservation/guest_
 
 // Payment Route
 $route['hotel/(:num)/payment'] = "payment/index/$1";
-$route['payment/(:num)/reservation/(:num)/cancel'] = "payment/cancel/$1/$2";
+$route['payment/(:num)/reservation/(:num)/process'] = "payment/process/$1/$2";
 
 $route['hotel/(:num)/reservation/(:num)/payment/(:num)/completed'] = "payment/confirm_status_payment/$1/$2/$3";
 $route['hotel/(:num)/reservation/(:num)/payment/(:num)/cancelled'] = "payment/cancel_status_payment/$1/$2/$3";
@@ -113,3 +112,4 @@ $route['guest/order/(:num)/detail'] = "order/detail_order/$1";
 $route['guest/payment/(:num)/transfer'] = "payment/guest_transfer/$1";
 $route['guest/cart/room/(:num)/add'] = "guest/add_cart/$1";
 $route['guest/cart'] = "guest/cart";
+$route['cart/user/(:num)/room/(:num)/delete'] = "guest/destroy_cart/$1/$2";

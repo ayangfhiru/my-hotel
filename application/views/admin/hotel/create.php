@@ -15,36 +15,51 @@ $this->load->view('admin/_partials/header');
         </div>
 
         <div class="section-body">
-            <form action="<?= site_url('hotel/store') ?>" method="POST" enctype="multipart/form-data">
-                <div class="mb-3 row">
-                    <div class="col">
-                        <label for="name" class="form-label">Nama Hotel</label>
-                        <input type="text" id="name" name="name" value="<?= set_value('name') ?>" class="form-control">
-                        <?= form_error('name', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
-                    <div class="col">
-                        <label for="city" class="form-label">Kota</label>
-                        <input type="text" id="city" name="city" value="<?= set_value('city') ?>" class="form-control">
-                        <?= form_error('city', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
+            <?= form_open_multipart(site_url('hotel/store')); ?>
+            <div class="mb-3 row">
+                <div class="col">
+                    <?= form_label('Nama Hotel', 'name', ['class' => 'form-label']); ?>
+                    <?= form_input('name', set_value('name'), [
+                        'id' => 'name',
+                        'class' => 'form-control'
+                    ]); ?>
+                    <?= form_error('name', '<span class="text-danger ml-2">', '</span>') ?>
                 </div>
-                <div class="mb-3">
-                    <label for="address" class="form-label">Alamat</label>
-                    <input type="text" id="address" name="address" value="<?= set_value('address') ?>" class="form-control">
-                    <?= form_error('address', '<span class="text-danger ml-2">', '</span>') ?>
+                <div class="col">
+                    <?= form_label('Kota', 'city', ['class' => 'form-label']); ?>
+                    <?= form_input('city', set_value('city'), [
+                        'id' => 'city',
+                        'class' => 'form-control'
+                    ]); ?>
+                    <?= form_error('city', '<span class="text-danger ml-2">', '</span>') ?>
                 </div>
-                <div class="form-floating mb-3">
-                    <label for="description">Deskripsi</label>
-                    <textarea class="form-control" id="description" name="description" placeholder="Deskripsi Hotel" style="height: 100px"></textarea>
-                </div>
-                <div class="col-5 custom-file mb-3">
-                    <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
-                    <label class="custom-file-label" for="thumbnail" id="label_picture1">Choose file</label>
-                </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary mb-3">Tambah Hotel</button>
-                </div>
-            </form>
+            </div>
+            <div class="mb-3">
+                <?= form_label('Alamat', 'address', ['class' => 'form-label']); ?>
+                <?= form_input('address', set_value('address'), [
+                    'id' => 'address',
+                    'class' => 'form-control'
+                ]); ?>
+                <?= form_error('address', '<span class="text-danger ml-2">', '</span>') ?>
+            </div>
+            <div class="form-floating mb-3">
+                <?= form_label('Deskripsi', 'description', ['class' => 'form-label']); ?>
+                <?= form_textarea('description', '', [
+                    'id' => 'description',
+                    'class' => 'form-control'
+                ]); ?>
+            </div>
+            <div class="col-5 custom-file mb-3">
+                <?= form_label('Pilih Thumbnail', 'thumbnail', ['class' => 'custom-file-label']); ?>
+                <?= form_upload('thumbnail', '', [
+                    'id' => 'thumbnail',
+                    'class' => 'custom-file-input'
+                ]) ?>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary mb-3">Tambah Hotel</button>
+            </div>
+            <?= form_close(); ?>
         </div>
     </section>
 </div>

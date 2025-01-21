@@ -15,7 +15,7 @@ resId: null}">
     <section class="section">
         <div class="section-header">
             <div class="d-flex align-items-center">
-                <a href="<?= site_url("hotel") ?>" class="mr-3">
+                <a href="<?= site_url("hotel/$hotelId/room") ?>" class="mr-3">
                     <i class="fa-solid fa-arrow-left fa-2xl"></i>
                 </a>
                 <h1>List Pembayaran</h1>
@@ -78,12 +78,16 @@ resId: null}">
                     $index = 1;
                     foreach ($payments as $pay):
                     ?>
-                        <tr class="<?= $pay->payment_status === 'completed' ? 'table-success' : ($pay->payment_status === 'failed' ? 'table-danger' : '') ?>">
+                        <tr id="pay-<?= $pay->payment_id ?>">
                             <th scope="row" class="text-center"><?= $index++; ?></th>
                             <td class="text-left"><?= $pay->full_name ?></td>
                             <td class="text-left"><?= $pay->invoice ?></td>
                             <td class="text-center text-capitalize"><?= $pay->payment_method ?></td>
-                            <td class="text-center text-capitalize"><?= $pay->payment_status ?></td>
+                            <td class="text-center">
+                                <i class="fa-regular
+                                <?= $pay->payment_status === 'completed' ? 'fa-badge-check text-success' : ($pay->payment_status === 'failed' ? 'fa-ban text-danger' : ($pay->payment_status === 'pending' ? 'fa-hourglass-start text-warning' : '')) ?>
+                                fa-xl"></i>
+                            </td>
                             <td class="text-left"><?= number_format($pay->amount) ?></td>
                             <td class="d-flex justify-content-center align-items-center">
                                 <button type="button"
@@ -93,7 +97,7 @@ resId: null}">
                                     payAmount='<?= $pay->amount ?>',
                                     payImg='<?= $pay->payment_img ?>',
                                     payStatus='<?= $pay->payment_status ?>',
-                                    payNote='<?= $pay->note ?>'
+                                    payNote='<?= $pay->cancel_note ?>'
                                     resId='<?= $pay->reservation_id ?>'"
                                     class="d-flex btn btn-info justify-content-center align-items-center" data-toggle="modal" data-target="#modalPaymentDetail" style="max-width: 150px; height: 50px">
                                     <i class="fa-solid fa-info"></i>
@@ -104,25 +108,6 @@ resId: null}">
                 </tbody>
             </table>
         </div>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </section>
 
     <!-- Modal Reservation -->

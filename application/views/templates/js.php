@@ -295,6 +295,9 @@ if ($this->uri->segment(2) == "" || $this->uri->segment(2) == "index") {
 <?php
 } ?>
 
+<!-- flowbite -->
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
 <!-- Template JS File -->
 <script src="<?php echo base_url(); ?>assets/js/scripts.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/custom.js"></script>
@@ -305,6 +308,12 @@ if ($this->uri->segment(2) == "" || $this->uri->segment(2) == "index") {
 <script src="<?php echo base_url(); ?>assets/js/countdown.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/accordion.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/reservation.js"></script>
+
+<!-- AJAX -->
+<script src="<?php echo base_url(); ?>assets/js/ajax/hotel.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/ajax/service.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/ajax/bed.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/ajax/cart.js"></script>
 </body>
 
 </html>

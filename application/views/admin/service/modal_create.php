@@ -9,26 +9,35 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= site_url('service/store') ?>" method="POST">
-                    <div class="mb-3">
-                        <label for="service_name" class="form-label">Service</label>
-                        <input type="text" id="service_name" name="service_name" value="<?= set_value('service_name') ?>" class="form-control">
-                        <?= form_error('service_name', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
-                    <div class="mb-3">
-                        <label for="service_price" class="form-label">Harga</label>
-                        <input type="number" id="service_price" name="service_price" value="<?= set_value('service_price') ?>" class="form-control">
-                        <?= form_error('service_price', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Deskripsi</label>
-                        <textarea name="description" class="form-control" aria-label="With textarea"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
-                    </div>
-                </form>
+                <?= form_open('service/store'); ?>
+                <div class="mb-3">
+                    <?= form_label('Service', 'service_name', ['class' => 'form-label']); ?>
+                    <?= form_input('service_name', '', [
+                        'id' => 'service_name',
+                        'class' => 'form-control'
+                    ]) ?>
+                </div>
+                <div class="mb-3">
+                    <?= form_label('Harga', 'service_price', ['class' => 'form-label']); ?>
+                    <?= form_input([
+                        'name' => 'service_price',
+                        'id' => 'service_price',
+                        'type' => 'number',
+                        'class' => 'form-control'
+                    ]) ?>
+                </div>
+                <div class="mb-3">
+                    <?= form_label('Deskripsi', 'description', ['class' => 'form-label']); ?>
+                    <?= form_textarea('description', '', [
+                        'id' => 'description',
+                        'class' => 'form-control'
+                    ]) ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </div>
+                <?= form_close(); ?>
             </div>
         </div>
     </div>

@@ -10,13 +10,11 @@
             </div>
             <div class="modal-body">
                 Are you sure you want to delete
-                <span x-text="bedName"></span>
+                <span x-text="serName"></span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a
-                    x-bind:href="'<?= site_url() ?>bed/destroy/' + bedId" type="button"
-                    class="btn btn-danger">Remove</a>
+                <button id="serviceDelete" :data-id="serId" data-url="<?= site_url() ?>" class="btn btn-danger">Remove</button>
             </div>
         </div>
     </div>

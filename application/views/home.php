@@ -18,14 +18,25 @@ $this->load->view('templates/header');
             <div class="text-center">
                 <h1 class="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">Data to enrich your online business</h1>
                 <p class="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.</p>
-                <form action="">
-                    <div class="mt-10 flex items-center justify-center gap-x-6">
-                        <input type="date" name="checkIn" id="checkIn" class="px-2 py-2 rounded w-60">
-                        <h1>TO</h1>
-                        <input type="date" name="checkOut" id="checkOut" class="px-2 py-2 rounded w-60">
-                        <button type="submit" class="px-3 py-2 bg-blue-400 rounded text-white">Search</button>
-                    </div>
-                </form>
+                <?= form_open('', [
+                    'method' => 'GET',
+                    'class' => 'mt-10 flex items-center justify-center gap-x-6'
+                ]); ?>
+                <?= form_input([
+                    'name' => 'checkIn',
+                    'id' => 'checkIn',
+                    'type' => 'date',
+                    'class' => 'px-2 py-2 rounded w-60'
+                ]); ?>
+                <h1>TO</h1>
+                <?= form_input([
+                    'name' => 'checkOut',
+                    'id' => 'checkOut',
+                    'type' => 'date',
+                    'class' => 'px-2 py-2 rounded w-60'
+                ]); ?>
+                <button type="submit" class="px-3 py-2 bg-blue-400 rounded text-white">Search</button>
+                <?= form_close(); ?>
             </div>
         </div>
         <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">

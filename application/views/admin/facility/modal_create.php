@@ -9,18 +9,35 @@
                  </button>
              </div>
              <div class="modal-body">
-                 <form action="<?= site_url('facility/store') ?>" method="POST">
-                     <div class="mb-3">
-                         <label for="facility_name" class="form-label">Nama Fasilitas</label>
-                         <input type="text" id="facility_name" name="facility_name" value="<?= set_value('facility_name') ?>" class="form-control">
-                         <?= form_error('facility_name', '<span class="text-danger ml-2">', '</span>') ?>
+                 <?= form_open(site_url('/facility/store')); ?>
+                 <div class="mb-3">
+                     <?= form_label('Nama Fasilitas', 'facility_name', ['class' => 'form-label']); ?>
+                     <?= form_input('facility_name', set_value('facility_name'), [
+                            'id' => 'facility_name',
+                            'class' => 'form-control'
+                        ]); ?>
+                     <?= form_error('facility_name', '<span class="text-danger ml-2">', '</span>') ?>
+                 </div>
+                 <div class="mb-3">
+                     <div class="d-flex">
+                         <?= form_label('Icon', 'icon', ['class' => 'form-label mr-2']); ?>
+                         <a href="https://fontawesome.com/search" target="_blank">
+                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                         </a>
                      </div>
-                     <div class="modal-footer">
-                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                         <button type="submit" class="btn btn-primary">Tambah</button>
-                     </div>
-                 </form>
+                     <?= form_input('icon', set_value('icon'), [
+                            'id' => 'icon',
+                            'class' => 'form-control'
+                        ]); ?>
+                     <?= form_error('icon', '<span class="text-danger ml-2">', '</span>') ?>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                     <button type="submit" class="btn btn-primary">Tambah</button>
+                 </div>
+                 <?= form_close(); ?>
              </div>
+
          </div>
      </div>
  </div>

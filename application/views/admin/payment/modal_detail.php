@@ -23,17 +23,25 @@
                          <label class="form-label">Total</label>
                          <input :value="payAmount" class="form-control" disabled>
                      </div>
-                     <form x-bind:action="'<?= site_url() ?>payment/' + payId + '/reservation/' + resId + '/cancel'" method="POST">
-                         <div class="form-label" x-show="payStatus !== 'completed'">
-                             <label for="note">Alasan Pembatalan</label>
-                             <textarea class="form-control" id="note" name="note" rows="3" x-text="hotelId" :disabled="payStatus === 'failed'"></textarea>
-                         </div>
-                         <div class="modal-footer">
-                             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                             <button x-show="payStatus === 'pending'" type="button" class="btn btn-success">Confirm</button>
-                             <button x-show="payStatus === 'pending'" type="submit" class="btn btn-danger">Batalkan</button>
-                         </div>
-                     </form>
+                     <?= form_open('', [
+                            'method' => 'POST',
+                            'x-bind:action' => "'" . site_url() . "'/payment/' + payId + '/reservation/' + resId + '/process'"
+                        ]); ?>
+                     <div class="form-label" x-show="payStatus !== 'completed'">
+                         <?= form_label('Alasan Pembatalan', 'cancel_note'); ?>
+                         <?= form_textarea('cancel_note', set_value('cancel_note'), [
+                                'id' => 'cancel_note',
+                                'class' => 'form-control',
+                                'x-text' => 'payNote',
+                                'x-bind:disabled' => "payStatus === 'failed'"
+                            ]); ?>
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                         <button x-show="payStatus === 'pending'" type="submit" name="payment" value="confirm" class="btn btn-success">Confirm</button>
+                         <button x-show="payStatus === 'pending'" type="submit" name="payment" value="cancel" class="btn btn-danger">Batalkan</button>
+                     </div>
+                     <?= form_close(); ?>
                  </div>
              </div>
          </div>

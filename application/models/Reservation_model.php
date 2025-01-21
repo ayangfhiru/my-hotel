@@ -69,7 +69,7 @@ class Reservation_model extends CI_Model
             $dataPayment['reservation_id'] = $reservationId;
             $this->db->insert('payments', $dataPayment);
 
-            if ($reservationRequest['request'] !== '' || $reservationRequest['note'] !== '') {
+            if ($reservationRequest['request'] !== '') {
                 $reservationRequest['reservation_id'] = $reservationId;
                 $this->db->insert('reservation_request', $reservationRequest);
             }
@@ -99,7 +99,7 @@ class Reservation_model extends CI_Model
         try {
             $query = "SELECT re.*, pa.*,
                     rc.room_code,
-                    be.bed_name,
+                    be.bed_type,
                     ro.room_type, ro.capacity, ro.price,
                     ho.name AS hotel_name, ho.address, ho.city, ho.telepon
                 FROM reservations AS re
@@ -120,16 +120,17 @@ class Reservation_model extends CI_Model
     public function get_reservation($hotelId, $checkIn, $checkOut)
     {
         try {
-            $query = "SELECT rc.*, re.*, pa.*, cr.note
-                    FROM room_codes AS rc
-                    LEFT JOIN reservations AS re ON rc.room_code_id = re.room_code_id
-                    JOIN rooms AS ro ON rc.room_id = ro.room_id
-                    JOIN payments AS pa ON re.reservation_id = pa.reservation_id
-                    LEFT JOIN cancel_reservations AS cr ON cr.reservation_id = re.reservation_id
-                    WHERE ro.hotel_id = ?
-                    AND re.check_out >= ?
-                    AND re.check_in <= ?
-                    ORDER BY rc.room_code ASC, re.check_in ASC";
+            $query = "SELECT rc.*, re.*, pa.*, rr.*, cr.cancel_note
+            FROM room_codes AS rc
+            LEFT JOIN reservations AS re ON rc.room_code_id = re.room_code_id
+            JOIN rooms AS ro ON rc.room_id = ro.room_id
+            JOIN payments AS pa ON re.reservation_id = pa.reservation_id
+            LEFT JOIN reservation_request AS rr ON re.reservation_id = rr.reservation_id
+            LEFT JOIN cancel_reservations AS cr ON cr.reservation_id = re.reservation_id
+            WHERE ro.hotel_id = ?
+            AND re.check_out >= ?
+            AND re.check_in <= ?
+            ORDER BY rc.room_code ASC, re.check_in ASC";
 
             return $this->db->query($query, [$hotelId, $checkIn, $checkOut])->result();
         } catch (Exception $e) {
@@ -184,7 +185,7 @@ class Reservation_model extends CI_Model
     public function guest_detail_reservation($userId)
     {
         try {
-            $query = "SELECT re.*, pa.*, ho.*, ro.*, rc.room_code, cr.note
+            $query = "SELECT re.*, pa.*, ho.*, ro.*, rc.room_code, cr.cancel_note
                     FROM reservations AS re
                     JOIN payments AS pa ON re.reservation_id = pa.reservation_id
                     LEFT JOIN cancel_reservations AS cr ON re.reservation_id = cr.reservation_id

@@ -45,7 +45,7 @@ roomStatus: null }">
                     $index = 1;
                     foreach ($room_code as $code) {
                     ?>
-                        <tr class="">
+                        <tr id="room-code-<?= $code->room_code_id ?>">
                             <th scope="row" class="text-center"><?= $index++; ?></th>
                             <td class="text-center"><?= $code->room_code ?></td>
                             <td class="text-center"><?= $code->room_status ?></td>
@@ -66,7 +66,7 @@ roomStatus: null }">
                                 <button
                                     type="button"
                                     @click="roomCodeId = '<?= $code->room_code_id ?>';
-                                    code = '<?= $code->room_code ?>'"
+                                    roomCode = '<?= $code->room_code ?>'"
                                     class="d-flex btn btn-danger mx-1 justify-content-center align-items-center"
                                     data-toggle="modal"
                                     data-target="#modalRoomCodeDelete"

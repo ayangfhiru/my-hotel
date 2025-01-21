@@ -9,7 +9,7 @@ class Payment_model extends CI_Model
     public function all($hotelId)
     {
         try {
-            $query = "SELECT pa.*, re.full_name, cr.note
+            $query = "SELECT pa.*, re.full_name, cr.cancel_note
                 FROM payments AS pa
                 JOIN reservations AS re ON pa.reservation_id = re.reservation_id
                 JOIN room_codes AS rc ON re.room_code_id = rc.room_code_id

@@ -33,10 +33,12 @@ $this->load->view('admin/_partials/header');
                     $index = 1;
                     foreach ($facilities as $facility) {
                     ?>
-                        <tr>
+                        <tr id="facility-<?= $facility->facility_id ?>">
                             <th scope="row" class="text-center"><?= $index++ ?></th>
                             <td class="text-left"><?= $facility->facility_name; ?></td>
-                            <td class="text-center">-</td>
+                            <td class="text-center">
+                                <i class="<?= $facility->icon ?> fa-xl"></i>
+                            </td>
                             <td class="text-center">
                                 <button type="button"
                                     @click="facilityId='<?= $facility->facility_id ?>', facilityName='<?= $facility->facility_name ?>'"

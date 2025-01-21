@@ -43,4 +43,15 @@ class Guest extends CI_Controller
         $back_url = !empty($back_url) ? $back_url : site_url('');
         redirect($back_url);
     }
+
+    public function destroy_cart($userId, $roomId)
+    {
+        $remove = $this->cart_model->delete($userId, $roomId);
+        if ($remove === TRUE) {
+            $this->session->set_flashdata('success', '');
+        } else {
+            $this->session->set_flashdata('failed', '');
+        }
+        redirect('guest/cart');
+    }
 }

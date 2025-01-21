@@ -9,27 +9,32 @@
                  </button>
              </div>
              <div class="modal-body">
-                 <form
-                     :action="'<?= site_url() ?>hotel/'+ hotelId +'/room/'+ roomId +'/room-code/'+ roomCodeId +'/update'"
-                     method="POST">
-                     <div class="mb-3">
-                         <label for="room_code" class="form-label">Room Code</label>
-                         <input type="text" id="room_code" name="room_code" :value="roomCode" class="form-control">
-                         <?= form_error('room_code', '<span class="text-danger ml-2">', '</span>') ?>
-                     </div>
-                     <div class="mb-3">
-                         <label for="room_status" class="form-label">Room Status</label>
-                         <select id="room_status" name="room_status" class="form-control">
-                             <?php foreach ($room_status as $sta): ?>
-                                 <option value="<?= $sta ?>"><?= $sta; ?></option>
-                             <?php endforeach ?>
-                         </select>
-                     </div>
-                     <div class="modal-footer">
-                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                         <button type="submit" class="btn btn-primary">Update</button>
-                     </div>
-                 </form>
+                 <?= form_open(site_url(), [
+                        'method' => 'POST',
+                        'x-bind:action' => "'/hotel/' + hotelId + '/room/' + roomId + '/room-code/' + roomCodeId + '/update'",
+                    ]); ?>
+                 <div class="mb-3">
+                     <?= form_label('Room Code', 'foom_code', ['class' => 'form-label']); ?>
+                     <?= form_input('room_code', '', [
+                            'id' => 'room_code',
+                            'x-bind:value' => 'roomCode',
+                            'class' => 'form-control'
+                        ]); ?>
+                     <?= form_error('room_code', '<span class="text-danger ml-2">', '</span>') ?>
+                 </div>
+                 <div class="mb-3">
+                     <?= form_label('Room Status', 'room_status', ['class' => 'form-label']); ?>
+                     <select id="room_status" name="room_status" class="form-control">
+                         <?php foreach ($room_status as $sta): ?>
+                             <option value="<?= $sta ?>"><?= $sta; ?></option>
+                         <?php endforeach ?>
+                     </select>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                     <button type="submit" class="btn btn-primary">Update</button>
+                 </div>
+                 <?= form_close(); ?>
              </div>
          </div>
      </div>

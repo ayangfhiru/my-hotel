@@ -84,10 +84,10 @@ $this->load->view('admin/_partials/header');
                     $index = 1;
                     foreach ($rooms as $room):
                     ?>
-                        <tr class="">
+                        <tr id="room-<?= $room->room_id ?>">
                             <th scope="row" class="text-center"><?= $index++; ?></th>
                             <td class="text-center"><?= $room->room_type ?></td>
-                            <td class="text-center"><?= $room->bed_name ?></td>
+                            <td class="text-center"><?= $room->bed_type ?></td>
                             <td class="text-center"><?= $room->capacity ?></td>
                             <td class="text-center"><?= number_format($room->price) ?></td>
                             <td class="d-flex justify-content-center align-items-center">

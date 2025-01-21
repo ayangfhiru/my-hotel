@@ -33,7 +33,7 @@ $this->load->view('admin/_partials/header');
                     $index = 1;
                     foreach ($services as $service) {
                     ?>
-                        <tr>
+                        <tr id="service-<?= $service->service_id ?>">
                             <th scope="row" class="text-center"><?= $index++ ?></th>
                             <td class="text-left"><?= $service->service_name; ?></td>
                             <td class="text-left"><?= number_format($service->service_price); ?></td>

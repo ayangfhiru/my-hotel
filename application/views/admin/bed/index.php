@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $this->load->view('admin/_partials/header');
 ?>
 <!-- Main Content -->
-<div class="main-content" x-data="{ bedId: null, bedName: null }">
+<div class="main-content" x-data="{ bedId: null, bedType: null }">
     <section class="section">
         <div class="section-header">
             <h1>List Tempat Tidur</h1>
@@ -31,19 +31,19 @@ $this->load->view('admin/_partials/header');
                     $index = 1;
                     foreach ($beds as $bed) {
                     ?>
-                        <tr>
+                        <tr id="bed-<?= $bed->bed_id ?>">
                             <th scope="row" class="text-center"><?= $index++ ?></th>
-                            <td class="text-left"><?= $bed->bed_name; ?></td>
+                            <td class="text-left"><?= $bed->bed_type; ?></td>
                             <td class="text-center">
                                 <button type="button"
-                                    @click="bedId='<?= $bed->bed_id ?>', bedName='<?= $bed->bed_name ?>'"
+                                    @click="bedId='<?= $bed->bed_id ?>', bedType='<?= $bed->bed_type ?>'"
                                     class="btn btn-link"
                                     data-toggle="modal"
                                     data-target="#modalBedUpdate">
                                     <i class="fas fa-solid fa-pen-nib"></i>
                                 </button>
                                 <button type="button"
-                                    @click="bedId='<?= $bed->bed_id ?>', bedName='<?= $bed->bed_name ?>'"
+                                    @click="bedId='<?= $bed->bed_id ?>', bedType='<?= $bed->bed_type ?>'"
                                     class="btn btn-link"
                                     data-toggle="modal"
                                     data-target="#modalBedDelete">

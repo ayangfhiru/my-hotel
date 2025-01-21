@@ -90,7 +90,7 @@ class RoomCode extends CI_Controller
         }
     }
 
-    public function destroy() {}
+    public function destroy($roomCodeId) {}
 
     public function update_room_code_status($hotelId, $roomCodeId)
     {

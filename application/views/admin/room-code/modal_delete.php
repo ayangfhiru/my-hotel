@@ -10,13 +10,14 @@
              </div>
              <div class="modal-body">
                  Are you sure you want to delete
-                 <span x-text="roomCode"></span>
+                 <span x-text="roomCode" class=""></span>
              </div>
              <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 <a
+                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                 <button id="roomCodeId" data-url="<?= site_url() ?>" :data-id="roomCodeId" class="btn btn-danger">Delete</button>
+                 <!-- <a
                      :href="'<?= site_url() ?>hotel/'+ hotelId +'/room/'+ roomId +'/room-code/'+ roomCodeId +'/delete'" type="button"
-                     class="btn btn-danger">Remove</a>
+                     class="btn btn-danger">Remove</a> -->
              </div>
          </div>
      </div>

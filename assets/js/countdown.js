@@ -28,6 +28,7 @@
 $(document).ready(function () {
 	$(".countdown-timer").each(function () {
 		const expireTime = $(this).data("expire-time");
+		const uploadImg = $(this).data("upload-img");
 		const targetTime = new Date(expireTime).getTime();
 		const timerId = $(this).attr("id");
 
@@ -48,7 +49,7 @@ $(document).ready(function () {
 
 			$("#" + timerId).text(formatTime(distance));
 
-			if (distance <= 0) {
+			if (distance <= 0 || uploadImg !== "") {
 				clearInterval(countdownInterval);
 				$("#" + timerId).text("-");
 			}

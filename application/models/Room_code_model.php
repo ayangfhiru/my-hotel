@@ -76,7 +76,7 @@ class Room_code_model extends CI_Model
         try {
             $query = "SELECT rc.room_code_id, rc.room_code,
                     ro.room_id, ro.room_type, ro.capacity, ro.price,
-                    be.bed_name
+                    be.bed_type
                     FROM room_codes rc
                     LEFT JOIN reservations res
                         ON rc.room_code_id = res.room_code_id

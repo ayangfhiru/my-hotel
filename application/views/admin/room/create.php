@@ -20,67 +20,91 @@ $this->load->view('admin/_partials/header');
         </div>
 
         <div class="section-body">
-            <form action="<?= site_url("hotel/$hotelId/room/store") ?>" method="POST" enctype="multipart/form-data">
-                <div class="mb-3 form-row">
-                    <div class="col">
-                        <label for="room_type" class="form-label">Tipe Kamar</label>
-                        <input type="text" id="room_type" name="room_type" value="<?= set_value('room_type') ?>" class="form-control">
-                        <?= form_error('room_type', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
-                    <div class="col">
-                        <label for="bed_id" class="form-label">Pilih Tipe Kasur</label>
-                        <select name="bed_id" id="bed_id" class="form-control">
-                            <option value="" selected>Tipe Kasur</option>
-                            <?php foreach ($beds as $bed):; ?>
-                                <option
-                                    value="<?= $bed->bed_id ?>">
-                                    <?= $bed->bed_name; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?= form_error('bed_id', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
+            <?= form_open_multipart(site_url("hotel/$hotelId/room/store")); ?>
+            <div class="mb-3 form-row">
+                <div class="col">
+                    <?= form_label('Tipe Kamar', 'room_type', ['class' => 'form-label']); ?>
+                    <?= form_input([
+                        'name' => 'room_type',
+                        'id' => 'room_type',
+                        'value' => set_value('room_type'),
+                        'class' => 'form-control'
+                    ]); ?>
+                    <?= form_error('room_type', '<span class="text-danger ml-2">', '</span>') ?>
                 </div>
-                <div class="mb-3 form-row">
-                    <div class="col">
-                        <label for="capacity" class="form-label">Kapasitas</label>
-                        <input type="number" id="capacity" name="capacity" value="<?= set_value('capacity') ?>" class="form-control">
-                        <?= form_error('capacity', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
-                    <div class="col">
-                        <label for="price" class="form-label">Harga Kamar</label>
-                        <input type="number" id="price" name="price" value="<?= set_value('price') ?>" class="form-control">
-                        <?= form_error('price', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
+                <div class="col">
+                    <?= form_label('Pilih Tipe Kasur', 'bed_id', ['class' => 'form-label']); ?>
+                    <?= form_dropdown(
+                        'bed_id',
+                        array_column($beds, 'bed_type', 'bed_id'),
+                        set_value('bed_id'),
+                        ['class' => 'form-control']
+                    ); ?>
+                    <?= form_error('bed_id', '<span class="text-danger ml-2">', '</span>') ?>
                 </div>
-                <div class="mb-3">
-                    <h1>Fasilitas Kamar</h1>
-                    <div class="row ml-3">
-                        <?php foreach ($facilities as $facility) { ?>
-                            <div class="col-3 form-check">
-                                <input class="form-check-input" type="checkbox" id="<?= $facility->facility_name ?>" name="facility_ids[]" value="<?= $facility->facility_id ?>">
-                                <label class="form-check-label" for="<?= $facility->facility_name ?>">
-                                    <?= $facility->facility_name ?>
-                                </label>
-                            </div>
-                        <?php } ?>
-                    </div>
+            </div>
+            <div class="mb-3 form-row">
+                <div class="col">
+                    <?= form_label('Kapasitas', 'capacity', ['class' => 'form-label']); ?>
+                    <?= form_input([
+                        'name' => 'capacity',
+                        'id' => 'capacity',
+                        'value' => set_value('capacity'),
+                        'class' => 'form-control',
+                        'type' => 'number'
+                    ]); ?>
+                    <?= form_error('capacity', '<span class="text-danger ml-2">', '</span>') ?>
                 </div>
-                <div class="mb-3">
-                    <h1>Tambah Foto</h1>
-                    <div class="row ml-3 gap-0">
-                        <?php for ($i = 1; $i <= 4; $i++): ?>
-                            <div class="col-5 custom-file ml-3 mt-1">
-                                <input type="file" class="custom-file-input" id="customFile" name="<?= "picture-$i" ?>">
-                                <label class="custom-file-label" for="customFile">Choose file</label>
-                            </div>
-                        <?php endfor; ?>
-                    </div>
+                <div class="col">
+                    <?= form_label('Harga Kamar', 'price', ['class' => 'form-label']); ?>
+                    <?= form_input([
+                        'name' => 'price',
+                        'id' => 'price',
+                        'value' => set_value('price'),
+                        'class' => 'form-control',
+                        'type' => 'number'
+                    ]); ?>
+                    <?= form_error('price', '<span class="text-danger ml-2">', '</span>') ?>
                 </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary mb-3">Tambah Hotel</button>
+            </div>
+            <div class="mb-3">
+                <h1>Fasilitas Kamar</h1>
+                <div class="row ml-3">
+                    <?php foreach ($facilities as $fac): ?>
+                        <div class="col-3 form-check">
+                            <?= form_checkbox(
+                                'facility_ids[]',
+                                $fac->facility_id,
+                                in_array($fac->facility_id, !empty(set_value('facility_ids[]')) ? set_value('facility_ids[]') : []),
+                                [
+                                    'id' => $fac->facility_name,
+                                    'class' => 'form-check-input'
+                                ]
+                            ); ?>
+                            <?= form_label($fac->facility_name, $fac->facility_name, ['class' => 'form-check-label']); ?>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-            </form>
+            </div>
+            <div class="mb-3">
+                <h1>Tambah Foto</h1>
+                <div class="row ml-3 gap-0">
+                    <?php for ($i = 1; $i <= 4; $i++): ?>
+                        <div class="col-5 custom-file ml-3 mt-1">
+                            <?= form_upload([
+                                'name' => "picture-$i",
+                                'id' => "customFile",
+                                'class' => 'custom-file-input'
+                            ]); ?>
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                    <?php endfor; ?>
+                </div>
+            </div>
+            <div class="mb-3">
+                <?= form_submit('submit', 'Tambah Hotel', ['class' => 'btn btn-primary mb-3']); ?>
+            </div>
+            <?= form_close(); ?>
         </div>
     </section>
 </div>

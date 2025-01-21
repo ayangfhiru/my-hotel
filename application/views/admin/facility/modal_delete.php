@@ -13,10 +13,8 @@
                  <span x-text="facilityName"></span>
              </div>
              <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 <a
-                     x-bind:href="'<?= site_url() ?>facility/destroy/'+ facilityId" type="button"
-                     class="btn btn-danger">Remove</a>
+                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                 <button id="facilityDelete" :data-id="facilityId" data-url="<?= site_url() ?>" class="btn btn-danger">Remove</button>
              </div>
          </div>
      </div>

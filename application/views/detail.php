@@ -83,7 +83,20 @@ $this->load->view('templates/header');
                 </div>
             </div>
             <div class="mt-10">
-                <h3 class="text-lg font-medium text-gray-900">Room</h3>
+                <div class="flex gap-x-10 items-center">
+                    <h3 class="text-lg font-medium text-gray-900">Room</h3>
+                    <?= form_open('', [
+                        'method' => 'GET',
+                        'class' => 'flex items-center gap-x-10'
+                    ]); ?>
+                    <div class="flex items-center">
+                        <input id="check_in" name="check_in" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Select date check in">
+                        <span class="mx-4 text-gray-500">to</span>
+                        <input id="check_out" name="check_out" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Select date check in">
+                    </div>
+                    <button class="">Cari</button>
+                    <?= form_close(); ?>
+                </div>
                 <div class="mt-4 flex flex-col gap-y-5">
                     <?php foreach ($rooms as $room): ?>
                         <a href="<?= site_url("guest/hotel/$hotelId/room/$room->room_id/reservation?check_in=$checkIn&check_out=$checkOut") ?>" class="relative block">
@@ -93,7 +106,7 @@ $this->load->view('templates/header');
                                     <div class="flex flex-col gap-y-3">
                                         <span class="flex gap-x-2 items-center">
                                             <i class="fa-solid fa-bed fa-lg"></i>
-                                            <p class="text-lg"><?= $room->bed_name; ?></p>
+                                            <p class="text-lg"><?= $room->bed_type; ?></p>
                                         </span>
                                         <span class="flex gap-x-2 items-center">
                                             <i class="fa-solid fa-user fa-lg"></i>

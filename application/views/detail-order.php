@@ -32,27 +32,21 @@ $this->load->view('templates/header');
             </div>
             <h1 class="text-xl font-semibold">IDR <?= number_format($detail->price); ?></h1>
         </div>
-        <div class="mt-8 grid grid-cols-2 gap-x-5">
-            <div class="border-r-2 pr-5">
-                <div class="flex justify-between">
-                    <label class="block mb-2 text-lg font-semibold text-gray-900">Request</label>
-                    <div class="mr-3 flex gap-x-3">
-                        <span class="flex gap-x-1">
-                            <p>Status</p>
-                            <p>Pending</p>
-                        </span>
-                        <span class="hidden gap-x-1">
-                            <p>Biaya tambahan</p>
-                            <p>-</p>
-                        </span>
-                    </div>
+        <div class="mt-8">
+            <div class="flex justify-between">
+                <label class="block mb-2 text-lg font-semibold text-gray-900">Request</label>
+                <div class="mr-3 flex gap-x-3">
+                    <span class="flex gap-x-1">
+                        <p>Status</p>
+                        <p>Pending</p>
+                    </span>
+                    <span class="hidden gap-x-1">
+                        <p>Biaya tambahan</p>
+                        <p>-</p>
+                    </span>
                 </div>
-                <textarea class="block h-fit p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" disabled><?= $detail->request; ?></textarea>
             </div>
-            <div class="">
-                <label class="block mb-2 text-lg font-semibold text-gray-900">Catatan</label>
-                <textarea class="block h-fit p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" disabled><?= $detail->note; ?></textarea>
-            </div>
+            <textarea class="block h-fit p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" disabled><?= $detail->request; ?></textarea>
         </div>
     </div>
 
@@ -63,6 +57,9 @@ $this->load->view('templates/header');
                 <tr>
                     <th scope="col" class="px-6 py-3">
                         Services name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Note
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Price
@@ -89,6 +86,9 @@ $this->load->view('templates/header');
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             <?= $service->service_name; ?>
                         </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-sm text-gray-900 whitespace-nowrap">
+                            <?= $service->note; ?>
+                        </th>
                         <td class="px-6 py-4">
                             <?= number_format($service->service_price); ?>
                         </td>
@@ -103,7 +103,7 @@ $this->load->view('templates/header');
             </tbody>
             <tfoot>
                 <tr class="font-semibold text-gray-900">
-                    <th scope="row" colspan="2" class="px-6 py-3 text-base text-right">Total</th>
+                    <th scope="row" colspan="3" class="px-6 py-3 text-base text-right">Total</th>
                     <td class="px-6 py-3"><?= $serviceQty; ?></td>
                     <td class="px-6 py-3"><?= number_format($servicePrice); ?></td>
                 </tr>

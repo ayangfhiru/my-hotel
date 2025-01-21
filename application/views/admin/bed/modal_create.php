@@ -9,17 +9,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= site_url('bed/store') ?>" method="POST">
-                    <div class="mb-3">
-                        <label for="bed_name" class="form-label">Nama Tempat Tidur</label>
-                        <input type="text" id="bed_name" name="bed_name" value="<?= set_value('bed_name') ?>" class="form-control">
-                        <?= form_error('bed_name', '<span class="text-danger ml-2">', '</span>') ?>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
-                    </div>
-                </form>
+                <?= form_open(site_url('bed/store')); ?>
+                <div class="mb-3">
+                    <?= form_label('Tipe Bed', 'bed_type', ['class' => 'form-label']); ?>
+                    <?= form_input('bed_type', set_value('bed_type'), [
+                        'id' => 'bed_type',
+                        'class' => 'form-control'
+                    ]); ?>
+                    <?= form_error('bed_type', '<span class="text-danger ml-2">', '</span>') ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </div>
+                <?= form_close(); ?>
             </div>
         </div>
     </div>

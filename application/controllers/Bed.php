@@ -26,12 +26,12 @@ class Bed extends CI_Controller
 
     public function store()
     {
-        $this->form_validation->set_rules('bed_name', 'Bed Name', 'trim|required');
+        $this->form_validation->set_rules('bed_type', 'Bed Name', 'trim|required');
         if ($this->form_validation->run() === FALSE) {
             $this->index();
         } else {
             $data = [
-                'bed_name' => $this->input->post('bed_name')
+                'bed_type' => $this->input->post('bed_type')
             ];
             $add =  $this->bed_model->create($data);
             if ($add === TRUE) {
@@ -45,12 +45,12 @@ class Bed extends CI_Controller
 
     public function update($id)
     {
-        $this->form_validation->set_rules('bed_name', 'Facility Name', 'trim|required');
+        $this->form_validation->set_rules('bed_type', 'Facility Name', 'trim|required');
         if ($this->form_validation->run() === FALSE) {
             $this->create();
         } else {
             $data = [
-                'bed_name' => $this->input->post('bed_name')
+                'bed_type' => $this->input->post('bed_type')
             ];
             $this->bed_model->update($id, $data);
             redirect('bed');

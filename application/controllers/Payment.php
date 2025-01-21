@@ -23,29 +23,40 @@ class Payment extends CI_Controller
         return $this->load->view('admin/payment/index', $data);
     }
 
-    public function cancel($paymentId, $reservationId)
+    public function process($paymentId, $reservationId)
     {
         guard('admin');
-        $this->form_validation->set_rules('note', 'Note', 'trim|required');
         $previous_url = $this->agent->referrer();
-        if (!$previous_url) {
-            $previous_url = base_url();
-        }
-        if ($this->form_validation->run() === FALSE) {
-            redirect($previous_url);
-        } else {
-            $dataNote = [
-                'reservation_id' => $reservationId,
-                'note' => $this->input->post('note')
-            ];
-            $cancel = $this->payment_model->multiple_cancel($paymentId, $reservationId, $dataNote);
-            if ($cancel === TRUE) {
-                $this->session->set_flashdata('success', 'Pembatalan sukses');
+        $action = $this->input->post('payment');
+        if ($action === 'confirm') {
+            $confirm = $this->payment_model->update($paymentId, ['payment_status' => 'completed']);
+            if ($confirm === TRUE) {
+                $this->session->set_flashdata('success', 'Konfirmasi sukses');
             } else {
-                $this->session->set_flashdata('failed', 'Pembatalan gagal');
+                $this->session->set_flashdata('failed', 'Konfirmasi gagal');
             }
-            redirect($previous_url);
+        } else if ($action === 'cancel') {
+            $this->form_validation->set_rules('cancel_note', 'Note', 'trim|required');
+            if (!$previous_url) {
+                $previous_url = base_url();
+            }
+            if ($this->form_validation->run() === FALSE) {
+                $this->session->set_flashdata('failed', 'Masukan pesan');
+                redirect($previous_url);
+            } else {
+                $dataNote = [
+                    'reservation_id' => $reservationId,
+                    'cancel_note' => $this->input->post('cancel_note')
+                ];
+                $cancel = $this->payment_model->multiple_cancel($paymentId, $reservationId, $dataNote);
+                if ($cancel === TRUE) {
+                    $this->session->set_flashdata('success', 'Pembatalan sukses');
+                } else {
+                    $this->session->set_flashdata('failed', 'Pembatalan gagal');
+                }
+            }
         }
+        redirect($previous_url);
     }
 
     public function create() {}

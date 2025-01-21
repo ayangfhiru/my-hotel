@@ -7,6 +7,7 @@ class Service extends CI_Controller
     {
         parent::__construct();
         $this->load->model('service_model');
+        // $this->load->helper('form');
         $this->load->library('form_validation');
         is_login();
         guard('admin');
@@ -44,19 +45,17 @@ class Service extends CI_Controller
     {
         $this->validation();
         if ($this->form_validation->run() === FALSE) {
-            $this->index();
+            $this->session->set_flashdata('failed', 'Tambah nilai di setiap form!');
         } else {
             $data = $this->get_data();
-            // print_r($data);
-            // exit();
             $add =  $this->service_model->create($data);
             if ($add === TRUE) {
                 $this->session->set_flashdata('success', 'Tambah Service Berhasil!');
             } else {
                 $this->session->set_flashdata('failed', 'Tambah Service Gagal!');
             }
-            redirect('service');
         }
+        redirect('service');
     }
 
     public function update($id)

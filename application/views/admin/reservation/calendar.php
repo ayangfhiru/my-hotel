@@ -27,13 +27,10 @@ $this->load->view('admin/_partials/header');
 hotelId:null,
 roomCodeId:null,
 reservationId: null,
-paymentId: null,
-fullName:null,
+fullName: null,
 checkIn: null,
 checkOut: null,
 resStatus: null,
-payMethod: null,
-amount: null,
 payStatus: null,
 roomCode:null,
 note:null
@@ -54,16 +51,28 @@ note:null
         </div>
 
         <div class="flex">
-            <form action="" class="flex items-center mb-3">
-                <div class="relative">
-                    <input name="start" type="date" value="<?= $startDate ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Select date end">
-                </div>
-                <span class="mx-4 text-gray-500">TO</span>
-                <div class="relative">
-                    <input name="end" type="date" value="<?= $endDate ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Select date end">
-                </div>
-                <button type="submit" class="ml-4 px-3 py-2.5 bg-green-400 rounded-lg text-slate-100">Search</button>
-            </form>
+            <?= form_open('', ['class' => 'flex items-center mb-3']); ?>
+            <div class="relative">
+                <?= form_input([
+                    'name' => 'start',
+                    'id' => 'start',
+                    'type' => 'date',
+                    'value' => $startDate,
+                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                ]); ?>
+            </div>
+            <span class="mx-4 text-gray-500">TO</span>
+            <div class="relative">
+                <?= form_input([
+                    'name' => 'end',
+                    'id' => 'end',
+                    'type' => 'date',
+                    'value' => $endDate,
+                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                ]); ?>
+            </div>
+            <button type="submit" class="ml-4 px-3 py-2.5 bg-green-400 rounded-lg text-slate-100">Search</button>
+            <?= form_close(); ?>
             <div>
                 <button type="button"
                     class="ml-4 px-3 py-2.5 bg-blue-400 rounded-lg text-slate-100"
@@ -108,13 +117,10 @@ note:null
                                 'hotelId' => $hotelId,
                                 'roomCodeId' => $reservation->room_code_id,
                                 'reservationId' => $reservation->reservation_id,
-                                'paymentId' => $reservation->payment_id,
                                 'fullName' => $reservation->full_name,
-                                'checkIn' => $reservation->check_in,
-                                'checkOut' => $reservation->check_out,
+                                'checkIn' => date('d M Y', strtotime($reservation->check_in)),
+                                'checkOut' => date('d M Y', strtotime($reservation->check_out)),
                                 'resStatus' => $reservation->reservation_status,
-                                'payMethod' => $reservation->payment_method,
-                                'amount' => number_format($reservation->amount, 2),
                                 'payStatus' => $reservation->payment_status,
                                 'roomCode' => $reservation->room_code,
                                 'note' => $reservation->note ?? ''
@@ -143,9 +149,6 @@ note:null
 
     <!-- Modal Detail Reservation -->
     <?php $this->load->view('admin/reservation/modal_detail'); ?>
-
-    <!-- Modal Detail Payment -->
-    <?php $this->load->view('admin/reservation/modal_detail_payment'); ?>
 
     <!-- Modal Cancel Reservation -->
     <?php $this->load->view('admin/reservation/modal_cancel_res'); ?>

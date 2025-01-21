@@ -9,17 +9,17 @@
                  </button>
              </div>
              <div class="modal-body">
-                 <form action="<?= site_url("hotel/$hotelId/room/$roomId/room-code/store") ?>" method="POST">
-                     <div class="mb-3">
-                         <label for="room_code" class="form-label">Room Code</label>
-                         <input type="text" id="room_code" name="room_code" value="<?= set_value('room_code') ?>" class="form-control">
-                         <?= form_error('room_code', '<span class="text-danger ml-2">', '</span>') ?>
-                     </div>
-                     <div class="modal-footer">
-                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                         <button type="submit" class="btn btn-primary">Tambah</button>
-                     </div>
-                 </form>
+                 <?= form_open("hotel/$hotelId/room/$roomId/room-code/store") ?>
+                 <div class="mb-3">
+                     <label for="room_code" class="form-label">Room Code</label>
+                     <?= form_input(['name' => 'room_code', 'id' => 'room_code', 'value' => set_value('room_code'), 'class' => 'form-control']) ?>
+                     <?= form_error('room_code', '<span class="text-danger ml-2">', '</span>') ?>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     <button type="submit" class="btn btn-primary">Tambah</button>
+                 </div>
+                 <?= form_close() ?>
              </div>
          </div>
      </div>

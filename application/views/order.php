@@ -41,24 +41,29 @@ $this->load->view('templates/header');
                     <h1 class="font-semibold text-lg">IDR <?= number_format($reservation->amount, 2); ?></h1>
                     <div class="flex gap-x-5" id="countdown-<?= $reservation->payment_id ?>">
                         <p class="font-semibold">Batas Pembayaran</p>
-                        <p id="timer-<?= $reservation->payment_id ?>" data-expire-time="<?= $reservation->expire_time ?>" class="countdown-timer text-lg text-red-500 font-semibold"></p>
+                        <p id="timer-<?= $reservation->payment_id ?>" data-upload-img="<?= $reservation->payment_img ?>" data-expire-time="<?= $reservation->expire_time ?>" class="countdown-timer text-lg text-red-500 font-semibold"></p>
                     </div>
                     <?php
                     $is_disabled = isset($reservation->payment_time) || date('Y-m-d H:i:s') > $reservation->expire_time;
                     ?>
-                    <form action="<?= site_url("guest/payment/$reservation->payment_id/transfer") ?>" method="POST" enctype="multipart/form-data" class="mt-2 space-y-1">
-                        <div class="flex items-center space-x-6">
-                            <label class="block">
-                                <span class="sr-only">Choose profile photo</span>
-                                <input type="file" name="transfer" id="transfer" class="block w-full text-sm text-slate-500 cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100
+                    <?= form_open_multipart(site_url("guest/payment/$reservation->payment_id/transfer"), [
+                        'class' => 'mt-2 space-y-1'
+                    ]); ?>
+                    <div class="flex items-center space-x-6">
+                        <label class="block">
+                            <span class="sr-only">Choose profile photo</span>
+                            <input type="file" name="transfer" id="transfer" class="block w-full text-sm text-slate-500 cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100
                                 <?= $is_disabled ? 'cursor-not-allowed' : '' ?>
                                 " <?= $is_disabled ? 'disabled' : '' ?> />
-                            </label>
-                        </div>
-                        <button type="submit" class="text-sm text-white py-2 px-4 rounded-full border-0 font-semibold bg-green-700 hover:bg-green-500
-                        <?= $is_disabled ? 'cursor-not-allowed' : '' ?>
-                        " <?= $is_disabled ? 'disabled' : '' ?>>Upload</button>
-                    </form>
+                        </label>
+                    </div>
+                    <button type="submit"
+                        class="text-sm text-white py-2 px-4 w-full rounded-full border-0 font-semibold bg-green-700 hover:bg-green-500
+                        <?= $is_disabled ? 'cursor-not-allowed' : '' ?>"
+                        <?= $is_disabled ? 'disabled' : '' ?>>
+                        Upload
+                    </button>
+                    <?= form_close(); ?>
                 </div>
             </div>
         </div>

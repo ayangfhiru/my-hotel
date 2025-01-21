@@ -8,6 +8,7 @@ class Facility extends CI_Controller
         parent::__construct();
         $this->load->model('facility_model');
         $this->load->library('form_validation');
+        $this->load->helper('icon');
         is_login();
         guard('admin');
     }
@@ -36,8 +37,10 @@ class Facility extends CI_Controller
         if ($this->form_validation->run() === FALSE) {
             $this->create();
         } else {
+            $elementIcon = $this->input->post('icon');
             $data = [
-                'facility_name' => $this->input->post('facility_name')
+                'facility_name' => $this->input->post('facility_name'),
+                'icon' => toIcon($elementIcon)
             ];
             $addFacility =  $this->facility_model->create($data);
             if ($addFacility === TRUE) {
@@ -55,10 +58,13 @@ class Facility extends CI_Controller
         if ($this->form_validation->run() === FALSE) {
             $this->create();
         } else {
-            $facility_name = $this->input->post('facility_name');
+            $elementIcon = $this->input->post('icon');
             $data = [
-                'facility_name' => $facility_name
+                'facility_name' => $this->input->post('facility_name'),
             ];
+            if ($elementIcon !== '') {
+                $data['icon'] = toIcon($elementIcon);
+            }
             $this->facility_model->update($id, $data);
             redirect('facility');
         }

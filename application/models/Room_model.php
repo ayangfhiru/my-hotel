@@ -150,7 +150,7 @@ class Room_model extends CI_Model
     public function search_room($hotelId, $checkIn, $checkOut)
     {
         try {
-            $query = "SELECT ro.room_id, ro.room_type, ro.capacity, ro.price, be.bed_name, COUNT(rc.room_id) AS total
+            $query = "SELECT ro.room_id, ro.room_type, ro.capacity, ro.price, be.bed_type, COUNT(rc.room_id) AS total
                 FROM room_codes rc
                 LEFT JOIN reservations res
                     ON rc.room_code_id = res.room_code_id

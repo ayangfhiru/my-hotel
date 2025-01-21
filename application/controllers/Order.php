@@ -12,9 +12,9 @@ class Order extends CI_Controller
 
     public function list_order()
     {
-        $this->load->model('reservation_model');
+        $this->load->model('order_model');
         $userId = $this->session->userdata('user_id');
-        $reservations = $this->reservation_model->guest_detail_reservation($userId);
+        $reservations = $this->order_model->list($userId);
         $data = [
             'title' => 'Detail Order',
             'reservations' => $reservations
@@ -55,13 +55,15 @@ class Order extends CI_Controller
         $service_price = explode(',', $data->service_price);
         $service_quantity = explode(',', $data->service_quantity);
         $total_price = explode(',', $data->total_price);
+        $note = explode(',', $data->note);
 
         foreach ($service_name as $index => $name) {
             $newData = [
                 'service_name' => $name,
                 'service_price' => $service_price[$index],
                 'service_quantity' => $service_quantity[$index],
-                'total_price' => $total_price[$index]
+                'total_price' => $total_price[$index],
+                'note' => $note[$index]
             ];
             array_push($services, $newData);
         }

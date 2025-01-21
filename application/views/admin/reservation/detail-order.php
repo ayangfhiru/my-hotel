@@ -8,7 +8,7 @@ $this->load->view('admin/_partials/header');
     <section class="section">
         <div class="section-header">
             <div class="d-flex align-items-center">
-                <a href="<?= site_url("") ?>" class="mr-3">
+                <a href="<?= site_url("hotel/$detail->hotel_id/reservation/calendar") ?>" class="mr-3">
                     <i class="fa-solid fa-arrow-left fa-2xl"></i>
                 </a>
                 <h1>Chek In</h1>
@@ -21,7 +21,7 @@ $this->load->view('admin/_partials/header');
         </div>
         <div class="section-body">
             <div class="container mt-10 pb-20">
-                <div class="flex flex-col border-b-2 px-5 pb-3">
+                <div class="flex flex-col border-b-2 pb-3">
                     <h1 class="font-semibold text-xl">Tamu</h1>
                     <div class="mt-3">
                         <h3 class="font-medium text-sm"><?= $detail->full_name; ?></h3>
@@ -33,7 +33,7 @@ $this->load->view('admin/_partials/header');
 
                 <!-- Reservasi -->
                 <div class="mt-5">
-                    <h1 class="pl-3 text-sm font-semibold"><?= $detail->hotel_name; ?></h1>
+                    <h1 class="ml-4 text-sm font-semibold"><?= $detail->hotel_name; ?></h1>
                     <div class="pt-2 px-3 flex justify-between items-center">
                         <div class="flex gap-x-4">
                             <img src="<?= base_url("assets/thumbnail/default.jpg") ?>" alt="My Hotel" class="w-20 rounded-md">
@@ -49,27 +49,21 @@ $this->load->view('admin/_partials/header');
                         </div>
                         <h1 class="text-xl font-semibold">IDR <?= number_format($detail->price); ?></h1>
                     </div>
-                    <div class="mt-8 grid grid-cols-2 gap-x-5">
-                        <div class="border-r-2 pr-5">
-                            <div class="flex justify-between">
-                                <label class="block mb-2 text-lg font-semibold text-gray-900">Request</label>
-                                <div class="mr-3 flex gap-x-3">
-                                    <span class="flex gap-x-1">
-                                        <p>Status</p>
-                                        <p>Pending</p>
-                                    </span>
-                                    <span class="hidden gap-x-1">
-                                        <p>Biaya tambahan</p>
-                                        <p>-</p>
-                                    </span>
-                                </div>
+                    <div class="mt-8">
+                        <div class="flex justify-between">
+                            <label class="block mb-2 text-lg font-semibold text-gray-900">Request</label>
+                            <div class="mr-3 flex gap-x-3">
+                                <span class="flex gap-x-1">
+                                    <p>Status</p>
+                                    <p>Pending</p>
+                                </span>
+                                <span class="hidden gap-x-1">
+                                    <p>Biaya tambahan</p>
+                                    <p>-</p>
+                                </span>
                             </div>
-                            <textarea class="block h-fit p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" disabled><?= $detail->request; ?></textarea>
                         </div>
-                        <div class="">
-                            <label class="block mb-2 text-lg font-semibold text-gray-900">Catatan</label>
-                            <textarea class="block h-fit p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" disabled><?= $detail->note; ?></textarea>
-                        </div>
+                        <textarea class="block h-fit p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" disabled><?= $detail->request; ?></textarea>
                     </div>
                 </div>
 
@@ -80,6 +74,9 @@ $this->load->view('admin/_partials/header');
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     Services name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Note
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Price
@@ -106,6 +103,9 @@ $this->load->view('admin/_partials/header');
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                         <?= $service->service_name; ?>
                                     </th>
+                                    <th scope="row" class="px-6 py-4 font-medium text-sm text-gray-900 whitespace-nowrap">
+                                        <?= $service->note; ?>
+                                    </th>
                                     <td class="px-6 py-4">
                                         <?= number_format($service->service_price); ?>
                                     </td>
@@ -120,7 +120,7 @@ $this->load->view('admin/_partials/header');
                         </tbody>
                         <tfoot>
                             <tr class="font-semibold text-gray-900">
-                                <th scope="row" colspan="2" class="px-6 py-3 text-base text-right">Total</th>
+                                <th scope="row" colspan="3" class="px-6 py-3 text-base text-right">Total</th>
                                 <td class="px-6 py-3"><?= $serviceQty; ?></td>
                                 <td class="px-6 py-3"><?= number_format($servicePrice); ?></td>
                             </tr>
