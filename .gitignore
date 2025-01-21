@@ -34,3 +34,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /node_modules
 /package-lock.json
 /assets/modules
+/assets/pictures
+/assets/thumbnail
+/assets/transfer
