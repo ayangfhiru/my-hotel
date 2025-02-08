@@ -1,9 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-function toIcon($html)
+function toIcon($html = null)
 {
-    $result = 'kosong';
     $dom = new DOMDocument;
     libxml_use_internal_errors(true);
     $dom->loadHTML($html);

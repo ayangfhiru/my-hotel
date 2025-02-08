@@ -6,6 +6,15 @@ class User_model extends CI_Model
     protected $table = 'users';
     protected $primaryKey = 'user_id';
 
+    public function allStaff()
+    {
+        try {
+            return $this->db->get($this->table)->result();
+        } catch (Exception $e) {
+            log_message('error', 'Error retrieving all beds: ' . $e->getMessage());
+            return [];
+        }
+    }
     public function find($userId)
     {
         try {
@@ -28,7 +37,7 @@ class User_model extends CI_Model
         }
     }
 
-    public function user_email($email)
+    public function findUserByEmail($email)
     {
         try {
             $this->db->where('email', $email);

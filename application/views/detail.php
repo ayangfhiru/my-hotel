@@ -1,20 +1,20 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-$this->load->view('templates/header');
+$this->load->view('templates/top-layout');
 ?>
 
 <div class="container">
     <!-- Image gallery -->
     <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 overflow-hidden">
-        <img src="<?= site_url("assets/thumbnail/" . ($hotel->thumbnail ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="w-full rounded-lg object-cover lg:block">
+        <img src="<?= site_url("assets/images/thumbnail/" . ($hotel->thumbnail ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="w-full rounded-lg object-cover lg:block">
         <div class="flex flex-col gap-y-6 justify-between">
-            <img src="<?= site_url("assets/pictures/" . ($pictures[0]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/1] w-full rounded-lg object-cover">
-            <img src="<?= site_url("assets/pictures/" . ($pictures[1]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/2] w-full rounded-lg object-cover">
-            <img src="<?= site_url("assets/pictures/" . ($pictures[3]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/1] w-full rounded-lg object-cover">
+            <img src="<?= site_url("assets/images/pictures/" . ($pictures[0]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/1] w-full rounded-lg object-cover">
+            <img src="<?= site_url("assets/images/pictures/" . ($pictures[1]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/2] w-full rounded-lg object-cover">
+            <img src="<?= site_url("assets/images/pictures/" . ($pictures[3]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/1] w-full rounded-lg object-cover">
         </div>
         <div class="flex flex-col gap-y-6">
-            <img src="<?= site_url("assets/pictures/" . ($pictures[2]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/3] w-full rounded-lg object-cover">
-            <img src="<?= site_url("assets/pictures/" . ($pictures[3]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[4/2] w-full rounded-lg object-cover">
+            <img src="<?= site_url("assets/images/pictures/" . ($pictures[2]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[3/3] w-full rounded-lg object-cover">
+            <img src="<?= site_url("assets/images/pictures/" . ($pictures[3]->picture ?? 'default.jpg')) ?>" alt="<?= $hotel->name ?>" class="aspect-[4/2] w-full rounded-lg object-cover">
         </div>
     </div>
 
@@ -54,7 +54,6 @@ $this->load->view('templates/header');
                 </div>
             </div>
 
-            <!-- Sizes -->
             <div class="mt-10">
                 <h3 class="text-lg font-medium text-gray-900">Fasilitas</h3>
                 <div class="grid grid-cols-3 mt-4 gap-x-2 gap-y-5">
@@ -77,7 +76,6 @@ $this->load->view('templates/header');
         <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
             <div>
                 <h3 class="sr-only">Description</h3>
-
                 <div class="space-y-6">
                     <p class="text-base text-gray-900"><?= $hotel->description; ?></p>
                 </div>
@@ -87,7 +85,7 @@ $this->load->view('templates/header');
                     <h3 class="text-lg font-medium text-gray-900">Room</h3>
                     <?= form_open('', [
                         'method' => 'GET',
-                        'class' => 'flex items-center gap-x-10'
+                        'class' => 'flex items-center gap-x-10 hidden'
                     ]); ?>
                     <div class="flex items-center">
                         <input id="check_in" name="check_in" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Select date check in">
@@ -99,7 +97,7 @@ $this->load->view('templates/header');
                 </div>
                 <div class="mt-4 flex flex-col gap-y-5">
                     <?php foreach ($rooms as $room): ?>
-                        <a href="<?= site_url("guest/hotel/$hotelId/room/$room->room_id/reservation?check_in=$checkIn&check_out=$checkOut") ?>" class="relative block">
+                        <a href="<?= site_url("guest/hotel/$hotel->hotel_id/room/$room->room_id/booking/" . strtotime($checkIn) . "/" . strtotime($checkOut)) ?>">
                             <div class="w-full h-48 p-4 rounded-lg shadow bg-gray-200 cursor-pointer text-gray-700">
                                 <h1 class="text-2xl font-semibold"><?= $room->room_type; ?></h1>
                                 <div class="flex gap-x-10">
@@ -126,9 +124,13 @@ $this->load->view('templates/header');
                                         endforeach; ?>
                                     </ul>
                                 </div>
-                                <div class="flex mt-5 justify-between items-center bg-orange-300">
+                                <div class="flex mt-5 justify-between items-center">
                                     <h2 class="text-lg">IDR <?= number_format($room->price); ?></h2>
-                                    <a href="<?= site_url("guest/cart/room/$room->room_id/add?check_in=$checkIn&check_out=$checkOut") ?>" class="px-4 py-2 bg-blue-400 rounded-md text-white">Tambah Keranjang</a>
+                                    <button data-room-id="<?= $room->room_id ?>"
+                                        data-check-in="<?= $checkIn ?>"
+                                        data-check-out="<?= $checkOut ?>"
+                                        data-url="<?= site_url() ?>"
+                                        class="addCart px-4 py-2 bg-blue-400 rounded-md text-white">Tambah Keranjang</button>
                                 </div>
                             </div>
                         </a>
@@ -139,4 +141,4 @@ $this->load->view('templates/header');
     </div>
 </div>
 
-<?php $this->load->view('templates/footer'); ?>
+<?php $this->load->view('templates/bottom-layout'); ?>

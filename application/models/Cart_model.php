@@ -3,8 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Cart_model extends CI_Model
 {
-    protected $table = 'carts';
-    protected $key = 'user_id';
+    protected $table = "carts";
+    protected $foreignKey1 = "user_id";
+    protected $foreignKey2 = "room_id";
 
     public function all()
     {
@@ -35,7 +36,17 @@ class Cart_model extends CI_Model
     public function create($data)
     {
         try {
-            return $this->db->insert($this->table, $data);
+            $this->db->from($this->table);
+            $this->db->where($data);
+            $cek = $this->db->get()->row();
+            if ($cek) {
+                $this->db->set('quantity', 'quantity + 1', FALSE);
+                $this->db->where($data);
+                $this->db->update($this->table);
+            } else {
+                $this->db->insert($this->table, $data);
+            }
+            return true;
         } catch (Exception $e) {
             log_message('error', 'Error creating cart: ' . $e->getMessage());
             return false;
@@ -56,9 +67,24 @@ class Cart_model extends CI_Model
     public function delete($userId, $roomId)
     {
         try {
-            $this->db->where('user_id', $userId);
-            $this->db->where('room_id', $roomId);
+            $this->db->where($this->foreignKey1, $userId);
+            $this->db->where($this->foreignKey2, $roomId);
             return $this->db->delete($this->table);
+        } catch (Exception $e) {
+            log_message('error', 'Error deleting cart with user_id ' . $id . ': ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function findRoomsByCart($userId, $data)
+    {
+        $tblRoom = "rooms";
+        try {
+            $this->db->from($this->table);
+            $this->db->join($tblRoom, "{$this->table}.{$this->foreignKey2} = $tblRoom.{$this->foreignKey2}");
+            $this->db->where("{$this->table}.{$this->foreignKey1}", $userId);
+            $this->db->where_in("{$this->table}.{$this->foreignKey2}", $data);
+            return $this->db->get()->result();
         } catch (Exception $e) {
             log_message('error', 'Error deleting cart with user_id ' . $id . ': ' . $e->getMessage());
             return false;

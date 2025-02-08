@@ -9,8 +9,8 @@ class Facility extends CI_Controller
         $this->load->model('facility_model');
         $this->load->library('form_validation');
         $this->load->helper('icon');
-        is_login();
-        guard('admin');
+        // is_login();
+        // guard('admin');
     }
 
     public function index()
@@ -20,7 +20,9 @@ class Facility extends CI_Controller
             'title' => 'Fasilitas',
             'facilities' => $facilities,
         ];
-        $this->load->view('admin/facility/index', $data);
+        // print_r($data);
+        // exit();
+        $this->load->view('facility/list-facility', $data);
     }
 
     public function create()
@@ -40,8 +42,10 @@ class Facility extends CI_Controller
             $elementIcon = $this->input->post('icon');
             $data = [
                 'facility_name' => $this->input->post('facility_name'),
-                'icon' => toIcon($elementIcon)
             ];
+            if (!empty($elementIcon)) {
+                $data['icon'] = toIcon($elementIcon);
+            }
             $addFacility =  $this->facility_model->create($data);
             if ($addFacility === TRUE) {
                 $this->session->set_flashdata('success', 'Tambah Fasilitas Berhasil!');
@@ -62,7 +66,7 @@ class Facility extends CI_Controller
             $data = [
                 'facility_name' => $this->input->post('facility_name'),
             ];
-            if ($elementIcon !== '') {
+            if (!empty($elementIcon)) {
                 $data['icon'] = toIcon($elementIcon);
             }
             $this->facility_model->update($id, $data);
@@ -70,9 +74,18 @@ class Facility extends CI_Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($facilityId)
     {
-        $this->facility_model->delete($id);
-        redirect('facility');
+        guard('admin');
+        $this->load->model('room/room_facility_model');
+
+        $checkFacility = $this->room_facility_model->findFacility(['facility_id' => $facilityId]);
+        if (empty($checkFacility)) {
+            $delete = $this->facility_model->delete($facilityId);
+            ($delete === TRUE) ?
+                $this->session->set_flashdata('success', 'Hapus fasilitas sukses') : $this->session->set_flashdata('failed', 'Hapus fasilitas gagal');
+        } else {
+            $this->session->set_flashdata('failed', 'Fasilitas masih digunakan kamar');
+        }
     }
 }

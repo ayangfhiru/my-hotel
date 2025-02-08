@@ -8,7 +8,7 @@ class Hotel extends CI_Controller
         parent::__construct();
         $this->load->model('hotel_model');
         $this->load->library('form_validation');
-        is_login();
+        // is_login();
     }
 
     public function validation()
@@ -21,37 +21,32 @@ class Hotel extends CI_Controller
 
     public function index()
     {
-        guard('admin');
+        guard('super');
         $hotels = $this->hotel_model->all();
         $data = [
             'title' => 'Hotel',
             'hotels' => $hotels
         ];
-        $this->load->view('admin/hotel/index', $data);
+        $this->load->view('hotel/index', $data);
     }
+
 
     public function show($hotelId)
     {
-        $this->load->model('room_model');
-        $this->load->model('room_picture_model');
-        $this->load->model('facility_model');
-        $checkIn = $this->input->get('checkIn') ?? date('Y-m-d');
-        $checkOut = $this->input->get('checkOut') ?? date('Y-m-d', strtotime('+1 day'));
+        guard('super');
+        $this->load->model('room/room_model');
+        $this->load->model('room/room_picture_model');
         $hotel = $this->hotel_model->find($hotelId);
-        $rooms = $this->room_model->search_room($hotelId, $checkIn, $checkOut);
-        $pictures = $this->room_picture_model->get_picture($hotelId);
-        $facilities = $this->facility_model->search_facility($hotelId);
+        $rooms = $this->room_model->findRoomWithHotel($hotelId);
+        $pictures = $this->room_picture_model->getPicturesByHotel($hotelId);
         $data = [
             'title' => 'Detail',
             'hotelId' => $hotelId,
             'hotel' => $hotel,
             'rooms' => $rooms,
             'pictures' => $pictures,
-            'facilities' => $facilities,
-            'checkIn' => $checkIn,
-            'checkOut' => $checkOut
         ];
-        $this->load->view('detail', $data);
+        $this->load->view('hotel/detail', $data);
     }
 
     public function create()
@@ -103,18 +98,18 @@ class Hotel extends CI_Controller
 
     public function edit($hotelId)
     {
-        guard('admin');
+        guard('super');
         $hotel = $this->hotel_model->find($hotelId);
         $data = [
             'title' => 'Update Hotel',
             'hotel' => $hotel
         ];
-        $this->load->view('admin/hotel/edit', $data);
+        $this->load->view('hotel/edit', $data);
     }
 
     public function update($hotelId)
     {
-        guard('admin');
+        guard('super');
         $this->validation();
         if ($this->form_validation->run() === FALSE) {
             $this->create();
@@ -142,27 +137,72 @@ class Hotel extends CI_Controller
     public function destroy($hotelId)
     {
         guard('admin');
-        $delete = $this->hotel_model->delete($hotelId);
-        if ($delete === TRUE) {
-            $this->session->set_flashdata('success', '');
+        $this->load->model('room/room_model');
+
+        $checkRoom = $this->room_model->where(['hotel_id' => $hotelId]);
+        if (empty($checkRoom)) {
+            $delete = $this->hotel_model->delete($hotelId);
+            ($delete === TRUE) ?
+                $this->session->set_flashdata('success', 'Hapus hotel sukses') : $this->session->set_flashdata('failed', 'Hapus hotel gagal');
         } else {
-            $this->session->set_flashdata('failed', '');
+            $this->session->set_flashdata('failed', 'Hotel masih memiliki kamar');
         }
-        redirect('hotel');
     }
 
-    public function guest_home()
+    public function findAvailableHotel()
     {
-        $checkIn = $this->input->get('checkIn') ?? date('Y-m-d');
-        $checkOut = $this->input->get('checkOut') ?? date('Y-m-d', strtotime('+1 day'));
-        $hotels = $this->hotel_model->hotel_available($checkIn, $checkOut);
-
+        $checkIn = $this->input->post('check_in');
+        $checkOut = $this->input->post('check_out');
+        $hotels = $this->hotel_model->findAvailableHotels($checkIn, $checkOut);
         $data = [
-            'title' => 'Hotel',
+            'title' => 'Search Hotel',
             'hotels' => $hotels,
             'checkIn' => $checkIn,
             'checkOut' => $checkOut
         ];
         $this->load->view('home', $data);
+    }
+
+    public function setDetailHotel()
+    {
+        $hotelId = $this->input->post('hotel_id');
+        $checkIn = $this->input->post('check_in') ?? date('Y-m-d');
+        $checkOut = $this->input->post('check_out') ?? date('Y-m-d', strtotime('+1 days'));
+
+        $dataSession = [
+            'hotel_id' => $hotelId,
+            'check_in' => $checkIn,
+            'check_out' => $checkOut
+        ];
+        $this->session->set_userdata('detail-hotel', $dataSession);
+        redirect('guest/hotel/detail');
+    }
+
+    public function showDetailHotel()
+    {
+        $this->load->model('room/room_model');
+        $this->load->model('room/room_picture_model');
+        $this->load->model('facility_model');
+
+        $data = $this->session->userdata('detail-hotel');
+        $hotelId = $data['hotel_id'];
+        $checkIn = $data['check_in'];
+        $checkOut = $data['check_out'];
+
+        $hotel = $this->hotel_model->find($hotelId);
+        $hotelPictures = $this->room_picture_model->getPicturesByHotel($hotelId);
+        $availableRooms = $this->room_model->findAvailableRooms($hotelId, $checkIn, $checkOut);
+        $facilities = $this->facility_model->findFacilitiesByHotel($hotelId);
+
+        $data = [
+            'title' => 'Detai Hotel',
+            'hotel' => $hotel,
+            'pictures' => $hotelPictures,
+            'rooms' => $availableRooms,
+            'facilities' => $facilities,
+            'checkIn' => $checkIn,
+            'checkOut' => $checkOut
+        ];
+        $this->load->view('detail', $data);
     }
 }

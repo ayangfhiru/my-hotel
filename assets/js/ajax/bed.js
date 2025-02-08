@@ -5,7 +5,7 @@ $(document).ready(function () {
 		const id = $(this).data("id");
 
 		$.ajax({
-			url: `${url}bed/destroy/${id}`,
+			url: `${url}bed/${id}/delete`,
 			type: "DELETE",
 			data: {
 				id,
@@ -13,9 +13,13 @@ $(document).ready(function () {
 			success: function (res) {
 				$(`#bed-${id}`).remove();
 				$('[data-dismiss="modal"]').click();
+				location.reload();
 			},
 			error: function (xhr, status, error) {
 				console.log(`delete error ${error}`);
+				setTimeout(function () {
+					location.reload();
+				}, 2000);
 				$('[data-dismiss="modal"]').click();
 			},
 		});

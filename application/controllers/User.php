@@ -7,117 +7,72 @@ class User extends CI_Controller
     {
         parent::__construct();
         $this->load->model('user_model');
+        $this->load->model('role_model');
         $this->load->library('form_validation');
-    }
-
-    public function login_validation()
-    {
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[5]|trim', [
-            'min_length' => 'The Password is too short',
-        ]);
-    }
-
-    public function register_validation()
-    {
-        $this->form_validation->set_rules('name', 'Name', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
-        $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|numeric|min_length[10]|max_length[13]|trim');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[5]|matches[confirm_password]|trim', [
-            'min_length' => 'The Password is too short',
-            'matches' => 'The Password does not match',
-        ]);
-        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|trim');
+        is_login();
     }
 
     public function index()
     {
+        $allStaff = $this->user_model->allStaff();
+        $roles = $this->role_model->all();
         $data = [
-            'title' => 'Sign In'
+            'users' => $allStaff,
+            'roles' => $roles,
         ];
-        $this->load->view('sign-in', $data);
+        $this->load->view('user/list-users', $data);
     }
 
-    public function login()
+    private function staffValidation()
     {
-        $this->login_validation();
-        if ($this->form_validation->run() === FALSE) {
-            $this->index();
-        } else {
-            $email = $this->input->post('email');
-            $password = $this->input->post('password');
-            $user = $this->user_model->user_email($email);
-            if (!$user) {
-                $this->session->set_flashdata('failed', 'User not found!');
-                $this->load->view('sign-in');
-            } else {
-                if (password_verify($password, $user->password)) {
-                    $dataSession = [
-                        'user_id' => $user->user_id,
-                        'name' => $user->name,
-                        'role' => $user->role,
-                        'is_login' => TRUE
-                    ];
-                    $this->session->set_flashdata('success', 'Login Success');
-                    $this->session->set_userdata($dataSession);
-                    if ($user->role === 'admin') {
-                        redirect('hotel');
-                    } else {
-                        redirect('guest');
-                    }
-                } else {
-                    $this->session->set_flashdata('failed', 'Password!');
-                    $this->load->view('auth/sign-in');
-                }
-            }
-        }
+        $this->form_validation->set_rules('name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
+        $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|min_length[10]|max_length[13]|trim');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[5]|trim', [
+            'min_length' => 'The Password is too short',
+            'matches' => 'The Password does not match',
+        ]);
     }
 
-    public function create()
+    private function getDataStaff()
     {
-        $data = [
-            'title' => 'Sign Up',
+        return [
+            'name' => $this->input->post('name'),
+            'email' => $this->input->post('email'),
+            'phone_number' => $this->input->post('phone_number'),
+            'role_code' => $this->input->post('role_code'),
+            'password' => $this->input->post('password'),
         ];
-        $this->load->view('sign-up', $data);
     }
 
-    public function register()
+    public function addStaff()
     {
-        $this->register_validation();
+        $this->staffValidation();
         if ($this->form_validation->run() === FALSE) {
-            $this->create();
+            redirect('users');
         } else {
-            $name = $this->input->post('name');
-            $email = $this->input->post('email');
-            $phone_number = $this->input->post('phone_number');
-            $password = $this->input->post('password');
-            $checkUser = $this->user_model->user_email($email);
+            $data = $this->getDataStaff();
+            $checkUser = $this->user_model->findUserByEmail($data['email']);
             if ($checkUser) {
                 $this->session->set_flashdata('failed', 'Email already exists!');
-                $this->create();
+                redirect('users');
             }
 
-            $dataUser = [
-                'name' => $name,
-                'email' => $email,
-                'phone_number' => $phone_number,
-                'password' => password_hash($password, PASSWORD_DEFAULT),
+            $dataStaff = [
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'phone_number' => $data['phone_number'],
+                'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+                'role_code' => $data['role_code'],
             ];
 
-            $register =  $this->user_model->create($dataUser);
+            $register =  $this->user_model->create($dataStaff);
             if ($register) {
                 $this->session->set_flashdata('success', 'Register Success!');
-                redirect('user');
             } else {
                 $this->session->set_flashdata('failed', 'Register Failed!');
-                $this->create();
             }
+            redirect('users');
         }
-    }
-
-    public function logout()
-    {
-        $this->session->sess_destroy();
-        redirect('user');
     }
 }

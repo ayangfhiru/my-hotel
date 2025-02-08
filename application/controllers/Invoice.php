@@ -10,11 +10,6 @@ class Invoice extends CI_Controller
         $this->load->helper('convert_date');
     }
 
-    public function index()
-    {
-        $this->load->view('invoice');
-    }
-
     public function generate_invoice($reservationId)
     {
         $this->load->model('reservation_model');
@@ -28,5 +23,10 @@ class Invoice extends CI_Controller
         $date = date('d-M-Y');
         $fileName = "$invoice->full_name-$date.pdf";
         $this->pdf->load_view('invoice', $data, $fileName, true);
+    }
+
+    public function index()
+    {
+        $this->load->view('invoice');
     }
 }

@@ -6,7 +6,7 @@ class Service extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('service_model');
+        $this->load->model('extra_service_model');
         // $this->load->helper('form');
         $this->load->library('form_validation');
         is_login();
@@ -31,7 +31,7 @@ class Service extends CI_Controller
 
     public function index()
     {
-        $services = $this->service_model->all();
+        $services = $this->extra_service_model->all();
         $data = [
             'title' => 'Tempat Tidur',
             'services' => $services,
@@ -48,7 +48,7 @@ class Service extends CI_Controller
             $this->session->set_flashdata('failed', 'Tambah nilai di setiap form!');
         } else {
             $data = $this->get_data();
-            $add =  $this->service_model->create($data);
+            $add =  $this->extra_service_model->create($data);
             if ($add === TRUE) {
                 $this->session->set_flashdata('success', 'Tambah Service Berhasil!');
             } else {
@@ -65,7 +65,7 @@ class Service extends CI_Controller
             $this->create();
         } else {
             $data = $this->get_data();
-            $update = $this->service_model->update($id, $data);
+            $update = $this->extra_service_model->update($id, $data);
             if ($update === TRUE) {
                 $this->session->set_flashdata('success', 'Update Service Berhasil!');
             } else {
@@ -75,14 +75,20 @@ class Service extends CI_Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($serviceId)
     {
-        $delete = $this->service_model->delete($id);
-        if ($delete === TRUE) {
-            $this->session->set_flashdata('success', 'Delete Service Berhasil!');
+        guard('admin');
+        $this->load->model('room/room_facility_model');
+
+        $checkService = $this->room_facility_model->findExtraService(['facility_id' => $serviceId]);
+        print_r($checkService);
+        exit();
+        if (empty($checkFacility)) {
+            $delete = $this->facility_model->delete($facilityId);
+            ($delete === TRUE) ?
+                $this->session->set_flashdata('success', 'Hapus fasilitas sukses') : $this->session->set_flashdata('failed', 'Hapus fasilitas gagal');
         } else {
-            $this->session->set_flashdata('failed', 'Delete Service Gagal!');
+            $this->session->set_flashdata('failed', 'Fasilitas masih digunakan kamar');
         }
-        redirect('service');
     }
 }

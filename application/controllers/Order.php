@@ -10,9 +10,25 @@ class Order extends CI_Controller
         // guard('tamu');
     }
 
-    public function list_order()
+    public function listBookings()
     {
         $this->load->model('order_model');
+        $this->load->model('booking/booking_model');
+        $this->load->model('booking/booking_detail_model');
+        $this->load->model('payment/payment_model');
+        $userId = $this->session->userdata('user_id');
+
+        $boDetail = $this->booking_detail_model->findDetailBookingByUserId($userId);
+        // $boDetail = $this->order_model->findBookingDetailByUser($userId);
+        $data = [
+            'title' => 'Detail Pemesanan',
+            'bookings' => $boDetail,
+        ];
+        return $this->load->view('order', $data);
+    }
+
+    public function list_order()
+    {
         $userId = $this->session->userdata('user_id');
         $reservations = $this->order_model->list($userId);
         $data = [

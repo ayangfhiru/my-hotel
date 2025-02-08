@@ -45,4 +45,22 @@ class Order_model extends CI_Model
             return [];
         }
     }
+
+    public function findBookingDetailByUser($userId)
+    {
+        $tblBo = "bookings";
+        $tblBoDet = "booking_details";
+        $tblPay = "payments";
+        $key = "booking_id";
+        try {
+            $this->db->from($tblBo);
+            $this->db->join($tblBoDet, "$tblBo.$key = $tblBoDet.$key");
+            $this->db->join($tblPay, "$tblBo.$key = $tblPay.$key");
+            $this->db->where("$tblBo.user_id", $userId);
+            return $this->db->get()->result();
+        } catch (Exception $e) {
+            log_message('error', 'Error inserting multiple tables: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

@@ -3,8 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Hotel_model extends CI_Model
 {
-    protected $table = 'hotels';
-    protected $primaryKey = 'hotel_id';
+    protected $table = "hotels";
+    protected $primaryKey = "hotel_id";
 
     public function all()
     {
@@ -74,19 +74,19 @@ class Hotel_model extends CI_Model
         }
     }
 
-    public function hotel_available($checkIn, $checkOut)
+    public function findAvailableHotels($checkIn, $checkOut)
     {
         try {
             $query = "SELECT DISTINCT ho.*
-            FROM room_codes rc
-            LEFT JOIN reservations res ON rc.room_code_id = res.room_code_id
+            FROM room_codes AS rc
+            LEFT JOIN booking_details AS bd ON rc.room_code_id = bd.room_code_id
                 AND NOT (
-                res.check_out <= ? OR
-                res.check_in >= ?
+                bd.check_out <= ? OR
+                bd.check_in >= ?
                 )
             JOIN rooms AS ro ON rc.room_id = ro.room_id
             JOIN hotels AS ho ON ro.hotel_id = ho.hotel_id
-            WHERE res.reservation_id IS NULL";
+            WHERE bd.booking_id IS NULL";
             return $this->db->query($query, [$checkIn, $checkOut])->result();
         } catch (Exception $e) {
             log_message('error', 'Error checking hotel availability: ' . $e->getMessage());

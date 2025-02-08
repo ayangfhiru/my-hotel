@@ -12,7 +12,7 @@ if ($this->session->flashdata('success')) {
 
 if ($toast_type): // Jika ada pesan, tampilkan toast
 ?>
-    <div id="toast" class="fixed right-10 top-20 ?> flex items-center w-full max-w-xs py-3 px-4 text-gray-800 rounded-lg shadow z-50
+    <div id="toast" class="fixed right-10 top-20 flex items-center w-full max-w-xs py-3 px-4 text-gray-800 rounded-lg shadow z-50
     <?= $toast_type == 'success' ? 'bg-green-300 text-green-800' : 'bg-red-300 text-red-800' ?>" role="alert">
         <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 <?= $toast_type == 'success' ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300' ?> rounded-lg">
             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

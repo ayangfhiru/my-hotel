@@ -3,8 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Bed_model extends CI_Model
 {
-    protected $table = 'beds';
-    protected $primaryKey = 'bed_id';
+    protected $table = "beds";
+    protected $primaryKey = "bed_id";
 
     public function all()
     {
@@ -16,14 +16,14 @@ class Bed_model extends CI_Model
         }
     }
 
-    public function find($id)
+    public function find($bedId)
     {
         try {
             $this->db->from($this->table);
-            $this->db->where($this->primaryKey, $id);
+            $this->db->where($this->primaryKey, $bedId);
             return $this->db->get()->row();
         } catch (Exception $e) {
-            log_message('error', 'Error finding bed with ID ' . $id . ': ' . $e->getMessage());
+            log_message('error', 'Error finding bed with ID ' . $bedId . ': ' . $e->getMessage());
             return null;
         }
     }
@@ -38,23 +38,24 @@ class Bed_model extends CI_Model
         }
     }
 
-    public function update($id, $data)
+    public function update($bedId, $data)
     {
         try {
-            $this->db->where($this->primaryKey, $id);
+            $this->db->where($this->primaryKey, $bedId);
             return $this->db->update($this->table, $data);
         } catch (Exception $e) {
-            log_message('error', 'Error updating bed with ID ' . $id . ': ' . $e->getMessage());
+            log_message('error', 'Error updating bed with Id ' . $bedId . ': ' . $e->getMessage());
             return false;
         }
     }
 
-    public function delete($id)
+    public function delete($bedId)
     {
         try {
-            return $this->db->delete($this->table, [$this->primaryKey => $id]);
+            $this->db->where($this->primaryKey, $bedId);
+            return $this->db->delete($this->table);
         } catch (Exception $e) {
-            log_message('error', 'Error deleting bed with ID ' . $id . ': ' . $e->getMessage());
+            log_message('error', 'Error deleting bed with Id ' . $bedId . ': ' . $e->getMessage());
             return false;
         }
     }

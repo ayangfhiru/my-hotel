@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+$this->load->view('templates/head');
 ?>
 
 <nav class="bg-gray-800 fixed top-0 left-0 right-0 z-40" x-data="{ isOpen: false, isOpenNav: false }">
@@ -36,11 +37,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 </div>
                 <div class="hidden sm:ml-6 sm:block">
                     <div class="flex space-x-4">
-                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
-                        <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-                        <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-                        <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
+                        <?= form_open(site_url('guest/hotel/search'), [
+                            'class' => 'flex items-center justify-center gap-x-6'
+                        ]); ?>
+                        <?= form_input([
+                            'name' => 'check_in',
+                            'id' => 'check_in',
+                            'type' => 'date',
+                            'class' => 'px-2 py-2 rounded w-60',
+                            'required' => ''
+                        ]); ?>
+                        <h1 class="text-white">TO</h1>
+                        <?= form_input([
+                            'name' => 'check_out',
+                            'id' => 'check_out',
+                            'type' => 'date',
+                            'class' => 'px-2 py-2 rounded w-60',
+                            'required' => ''
+                        ]); ?>
+                        <button type="submit" class="px-3 py-2 bg-blue-400 rounded text-white">Search</button>
+                        <?= form_close(); ?>
                     </div>
                 </div>
             </div>
@@ -104,7 +120,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                 <i class="fa-solid fa-bag-shopping"></i>
                                 <span>Order</span>
                             </a>
-                            <a href="<?= site_url('user/logout') ?>" class="block px-4 py-2 text-sm text-red-700 space-x-2" role="menuitem" tabindex="-1" id="user-menu-item-2">
+                            <a href="<?= site_url('logout') ?>" class="block px-4 py-2 text-sm text-red-700 space-x-2" role="menuitem" tabindex="-1" id="user-menu-item-2">
                                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                 <span>Sign out</span>
                             </a>

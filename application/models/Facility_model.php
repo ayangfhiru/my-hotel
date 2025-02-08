@@ -3,8 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Facility_model extends CI_Model
 {
-    protected $table = 'facilities';
-    protected $primaryKey = 'facility_id';
+    protected $table = "facilities";
+    protected $primaryKey = "facility_id";
 
     public function all()
     {
@@ -59,12 +59,12 @@ class Facility_model extends CI_Model
         }
     }
 
-    public function search_facility($hotelId)
+    public function findFacilitiesByHotel($hotelId)
     {
         try {
             $query = "SELECT fa.*, rf.room_id
                 FROM facilities AS fa
-                LEFT JOIN room_facility AS rf
+                LEFT JOIN room_facilities AS rf
                 ON fa.facility_id = rf.facility_id
                 JOIN rooms AS ro
                 ON rf.room_id = ro.room_id

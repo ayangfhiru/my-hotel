@@ -8,8 +8,8 @@ class Bed extends CI_Controller
         parent::__construct();
         $this->load->model('bed_model');
         $this->load->library('form_validation');
-        is_login();
-        guard('admin');
+        // is_login();
+        // guard('super');
     }
 
     public function index()
@@ -19,10 +19,8 @@ class Bed extends CI_Controller
             'title' => 'Tempat Tidur',
             'beds' => $beds,
         ];
-        $this->load->view('admin/bed/index', $data);
+        $this->load->view('bed/list-beds', $data);
     }
-
-    public function create() {}
 
     public function store()
     {
@@ -57,9 +55,18 @@ class Bed extends CI_Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($bedId)
     {
-        $this->bed_model->delete($id);
-        redirect('bed');
+        guard('admin');
+        $this->load->model('room/room_model');
+
+        $checkRoom = $this->room_model->where(['bed_id' => $bedId]);
+        if (empty($checkRoom)) {
+            $delete = $this->bed_model->delete($bedId);
+            ($delete === TRUE) ?
+                $this->session->set_flashdata('success', 'Hapus tampat tidur sukses') : $this->session->set_flashdata('failed', 'Hapus tampat tidur gagal');
+        } else {
+            $this->session->set_flashdata('failed', 'Masih ada kamar yang memakai');
+        }
     }
 }

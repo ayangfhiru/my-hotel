@@ -1,11 +1,11 @@
 $(document).ready(function () {
-	$("#roomCodeId").click(function (e) {
+	$("#roomCodeDelete").click(function (e) {
 		e.preventDefault();
 		const url = $(this).data("url");
 		const id = $(this).data("id");
 
 		$.ajax({
-			url: `${url}room-code/destroy/${id}`,
+			url: `${url}room/roomcode/destroy/${id}`,
 			type: "DELETE",
 			data: {
 				id: id,

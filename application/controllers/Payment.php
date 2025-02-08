@@ -6,21 +6,26 @@ class Payment extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('payment_model');
+        $this->load->model('payment/payment_model');
         $this->load->library('user_agent');
-        is_login();
+        // is_login();
     }
 
-    public function index($hotelId)
+    public function index()
     {
-        guard('admin');
-        $payments = $this->payment_model->all($hotelId);
+        guard(['super', 'fo']);
+        $userRole = $this->session->userdata('role');
+        if ($userRole === 'SUPER_ADMIN') {
+            $payments = $this->payment_model->all();
+        } else {
+            $hotelId = $this->session->userdata('hotel_id');
+            $payments = $this->payment_model->getWithHotel($hotelId);
+        }
         $data = [
             'title' => 'Payment',
-            'hotelId' => $hotelId,
             'payments' => $payments
         ];
-        return $this->load->view('admin/payment/index', $data);
+        return $this->load->view('payment/index', $data);
     }
 
     public function process($paymentId, $reservationId)
@@ -59,15 +64,13 @@ class Payment extends CI_Controller
         redirect($previous_url);
     }
 
-    public function create() {}
-
-    public function store() {}
-
-    public function edit() {}
-
-    public function update() {}
-
-    public function destroy() {}
+    public function detailPayment($paymentId)
+    {
+        $this->load->model('payment/payment_detail_model');
+        $paymentDetail = $this->payment_detail_model->paymentDetail($paymentId);
+        print_r($paymentDetail);
+        // return $this->load->view('payment/detail');
+    }
 
     public function confirm_status_payment($hotelId, $reservationId, $paymentId)
     {
@@ -122,5 +125,53 @@ class Payment extends CI_Controller
             $this->session->set_flashdata('failed', 'Upload Gagal');
             redirect('guest/order');
         }
+    }
+
+    public function payNow($snapToken)
+    {
+        $urlPay = "https://app.sandbox.midtrans.com/snap/v2/vtweb/$snapToken";
+        redirect($urlPay);
+    }
+
+    public function handleNotification()
+    {
+        $notification = file_get_contents('php://input');
+        $notif = json_decode($notification);
+        $orderId = $notif->order_id;
+
+        $data = [
+            'transaction_status' => $notif->transaction_status,
+            'transaction_id' => $notif->transaction_id,
+            'transaction_time' => $notif->transaction_time,
+            'signature_key' => $notif->signature_key,
+            'payment_type' => $notif->payment_type,
+            // 'va_number' => $notif->va_numbers[0]->va_number,
+            // 'bank' => $notif->va_numbers[0]->bank,
+        ];
+
+        if ($notif->transaction_status == 'capture' && $notif->payment_type == 'credit_card') {
+            if ($notif->fraud_status == 'challenge') {
+                // Menangani status challenge
+                // $this->handle_challenge($notif);
+            } else if ($notif->fraud_status == 'accept') {
+                // Menangani pembayaran sukses
+                // $this->handle_success($notif);
+            }
+        } else if ($notif->transaction_status == 'settlement') {
+            // Menangani status settlement
+            $data['payment_status'] = 'paid';
+        } else if ($notif->transaction_status == 'pending') {
+            // Menangani status pending
+            $data['payment_status'] = 'pending';
+        } else if ($notif->transaction_status == 'failed') {
+            // Menangani transaksi gagal
+            $data['payment_status'] = 'failed';
+        } else if ($notif->transaction_status == 'cancel') {
+            // Menangani transaksi yang dibatalkan
+            $data['payment_status'] = 'cancel';
+        }
+
+        $this->payment_model->updateByOrderId($orderId, $data);
+        print_r($data);
     }
 }
